@@ -13,7 +13,7 @@ import '../../widgets/bottomPainter.dart';
 import '../../widgets/companySettingsTextField.dart';
 import '../../widgets/innerShadowTBContainer.dart';
 import 'Cartpage.dart';
-import 'viewProductDetail.dart';
+import 'Videocall.dart';
 
 
 class OrderSuccessful extends StatefulWidget {

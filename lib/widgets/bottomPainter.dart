@@ -1,8 +1,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:zoomnshop/pages/HomePage/ViewProfile.dart';
+import 'package:zoomnshop/pages/myOrder/OrderDeliveryDetails.dart';
+import 'package:zoomnshop/pages/myOrder/myOrderDetails.dart';
 
 import '../notifier/themeNotifier.dart';
+import '../pages/HomePage/Cartpage.dart';
+import '../pages/navHomeScreen.dart';
 import '../utils/sizeLocal.dart';
 
 class RPSCustomPainter3 extends CustomPainter {
@@ -97,12 +102,14 @@ class BottomNavi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Container(
-      width: SizeConfig.screenWidth,
+      width: SizeConfig.screenWidth!-40,
       // height:_keyboardVisible?0:  70,
+      margin: EdgeInsets.only(left: 20,right: 20),
       height: 65,
       decoration: BoxDecoration(
-          color: Colors.white12.withOpacity(0.0),
+          color: Colors.white,
           // color: Color(0xFF787878).withOpacity(0.1),
+          borderRadius: BorderRadius.circular(30),
           boxShadow: [
             BoxShadow(
               color: Color(0xFF787878).withOpacity(0.2),
@@ -114,22 +121,59 @@ class BottomNavi extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-            ),
-            margin:EdgeInsets.only(top: 0),
-            child: CustomPaint(
-              size: Size( SizeConfig.screenWidth!, 65),
-              painter: RPSCustomPainter(),
-            ),
-          ),
+          // Container(
+          //   decoration: BoxDecoration(
+          //   ),
+          //   margin:EdgeInsets.only(top: 0),
+          //   child: CustomPaint(
+          //     size: Size( SizeConfig.screenWidth!, 65),
+          //     painter: RPSCustomPainter(),
+          //   ),
+          // ),
           Container(
             width:  SizeConfig.screenWidth,
             height: 65,
-            child: Stack(
-              children: [
-
-              ],
+            child: Container(
+              alignment: Alignment.center,
+              width: SizeConfig.screenHeight!*0.8,
+              margin: EdgeInsets.only(left: 30,right: 30,bottom:16 ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Masterpage()),);
+                    },
+                    child: Container(
+                      width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Color(0xffEEF6F9),
+                            shape: BoxShape.circle
+                        ),
+                        child: Icon(Icons.home_filled,color:Color(0xffF67D87),size: 30,))
+                  ),
+                  GestureDetector(
+                    onTap: (){
+                      // Navigator.push(context, MaterialPageRoute(builder: (context)=>MYOrderDetails()),);
+                    },
+                    child: Icon(Icons.receipt,color:Color(0xff7B869A),size: 30,)
+                  ),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>CartPage()),);
+                    },
+                    child: Icon(Icons.shopping_cart,color:Color(0xff7B869A),size: 30,)
+                  ),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewProfile()),);
+                    },
+                   child: Icon(Icons.perm_identity_rounded,color:Color(0xff7B869A),size: 30,)
+                  ),
+                ]
+              ),
             ),
           )
         ],
@@ -141,37 +185,41 @@ class BottomNavi extends StatelessWidget {
 class BottomCenterIcon extends StatelessWidget {
   VoidCallback ontap;
   Widget widget;
-  BottomCenterIcon({required this.ontap,required this.widget});
+  Widget widget2;
+  Widget widget3;
+  Widget widget4;
+
+  BottomCenterIcon({required this.ontap,required this.widget,required this.widget2,required this.widget3,required this.widget4});
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.bottomCenter,
+      //alignment: Alignment.bottomCenter,
       child: GestureDetector(
         onTap:ontap,
-        child: Container(
-          height: 57,
-          width: 57,
-          margin: EdgeInsets.only(bottom: 25),
-          decoration: BoxDecoration(
-              color: Provider.of<ThemeNotifier>(context).primaryColor,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color:Provider.of<ThemeNotifier>(context).primaryColor.withOpacity(0.5),
-                  blurRadius: 10.0, // soften the shadow
-                  spreadRadius: 3, //extend the shadow
-                  offset: Offset(
-                    2.0, // Move to right 10  horizontally
-                    4.0, // Move to bottom 10 Vertically
-                  ),
-                )
-              ]
-          ),
-          child: Center(
-          //  child: Image.asset("assets/items-list/cart.png",width: 30,),
-            child: widget
-          ),
-        ),
+        // child: Container(
+        //   width: SizeConfig.screenHeight!*0.8,
+        //   margin: EdgeInsets.only(left: 30,right: 30,bottom: 15),
+        //   child: Row(
+        //     crossAxisAlignment: CrossAxisAlignment.center,
+        //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //     children: [
+        //       Container(
+        //         child:widget ,
+        //       ),
+        //       Container(
+        //         child:widget2 ,
+        //       ),
+        //       Container(
+        //         child:widget3 ,
+        //       ),
+        //       Container(
+        //         child:widget4 ,
+        //       )
+        //     ],
+        //   //  child: Image.asset("assets/items-list/cart.png",width: 30,),
+        //
+        //   ),
+        // ),
       ),
     );
   }

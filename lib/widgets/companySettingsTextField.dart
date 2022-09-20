@@ -33,10 +33,10 @@ class CompanySettingsTextField extends StatelessWidget {
           fillColor: Color(0xffff0000),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(borderRadius),
-              borderSide: BorderSide(color: Color(0xffD2D2D2))
+              borderSide: BorderSide(color: Color(0xffffffff))
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xff6A8528)),
+            borderSide: BorderSide(color: Color(0xffFE316C)),
             borderRadius: BorderRadius.circular(borderRadius),
           ),
           border: InputBorder.none,

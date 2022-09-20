@@ -67,15 +67,16 @@ class _ViewProfileState extends State<ViewProfile> {
                   ),
                   child:Column(
                     children: [
-                      SizedBox(height: 5,),
+                      SizedBox(height: 20,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
                             height: 35,
                             width: 35,
                             alignment: Alignment.centerLeft,
-                            margin: EdgeInsets.only(left: 30,top: 30),
+                            margin: EdgeInsets.only(left: 20,),
                             decoration: BoxDecoration(
                                 color: tn.primaryColor,
                                 borderRadius: BorderRadius.circular(5)
@@ -87,8 +88,12 @@ class _ViewProfileState extends State<ViewProfile> {
                               // Navigator.push(context, MaterialPageRoute(builder: (ctx)=>ThemeSettings()));
                             }, icon: Icon(Icons.arrow_back_ios_sharp,color:Colors.white,size: 20,),),
                           ),
+                          SizedBox(width: 10,),
+                          Text('My Profile'
+                            ,style: TextStyle(fontFamily: 'RB',fontSize: 20,color: Colors.black54,letterSpacing: 0.1),),
                         ],
                       ),
+                      SizedBox(height: 10,),
                       Column(
                         children: [
                           Container(
@@ -100,9 +105,9 @@ class _ViewProfileState extends State<ViewProfile> {
                                   shape: BoxShape.circle
                               ),
                               child: GestureDetector(
-                                onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewProfile(),));
-                                },
+                                // onTap: (){
+                                //   Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewProfile(),));
+                                // },
                                 child: Container(
                                     height: 145,
                                     width: 145,
@@ -118,7 +123,7 @@ class _ViewProfileState extends State<ViewProfile> {
                           SizedBox(height: 20,),
                           Container(
                             child: Text('Mr. Balasubramaniyan v'
-                              ,style: TextStyle(fontFamily: 'RB',fontSize: 20,color: Colors.black54,letterSpacing: 0.1),),
+                              ,style: TextStyle(fontFamily: 'RR',fontSize: 18,color: Colors.black54,letterSpacing: 0.1),),
                           ),
                           SizedBox(height: 5,),
                           Container(

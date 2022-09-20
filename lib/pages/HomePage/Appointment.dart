@@ -13,19 +13,18 @@ import '../../utils/sizeLocal.dart';
 import '../../widgets/bottomPainter.dart';
 import '../../widgets/companySettingsTextField.dart';
 import '../../widgets/innerShadowTBContainer.dart';
-import 'OrderDeliveryDetails.dart';
 
 
 
-class MYOrderDetails extends StatefulWidget {
+class AppointmentDetails extends StatefulWidget {
   VoidCallback voidCallback;
-  MYOrderDetails({required this.voidCallback});
+  AppointmentDetails({required this.voidCallback});
 
   @override
-  _MYOrderDetailsState createState() => _MYOrderDetailsState();
+  _AppointmentDetailsState createState() => _AppointmentDetailsState();
 }
 
-class _MYOrderDetailsState extends State<MYOrderDetails> {
+class _AppointmentDetailsState extends State<AppointmentDetails> {
   @override
   late  double width,height,width2,height2;
   bool openText=false;
@@ -72,7 +71,7 @@ class _MYOrderDetailsState extends State<MYOrderDetails> {
                                 )
                             ),
                             SizedBox(width: 5,),
-                            Text('Order History',style: TextStyle(fontFamily: 'RR',fontSize: 24,color: Colors.black,letterSpacing: 0.1)),
+                            Text('Appointment',style: TextStyle(fontFamily: 'RR',fontSize: 24,color: Colors.black,letterSpacing: 0.1)),
                             Spacer(),
                             GestureDetector(
                                 onTap: () {
@@ -103,7 +102,7 @@ class _MYOrderDetailsState extends State<MYOrderDetails> {
                                     // SizedBox(height: 20,),
                                     GestureDetector(
                                       onTap: (){
-                                        Navigator.push(context, MaterialPageRoute(builder: (ctx)=>OrderDeliveryDetails()));
+                                        // Navigator.push(context, MaterialPageRoute(builder: (ctx)=>OrderDeliveryDetails()));
                                       },
                                       child: Container(
                                         width: width,
@@ -135,9 +134,16 @@ class _MYOrderDetailsState extends State<MYOrderDetails> {
                                               alignment: Alignment.center,
                                               decoration: BoxDecoration(
                                                   color: Color(0XFFFED2DF),
-                                                  borderRadius: BorderRadius.circular(10)
+                                                  borderRadius: BorderRadius.circular(25)
                                               ),
-                                              child: Image.asset('assets/images/loginpages/Clothes.png',height: 50,fit: BoxFit.cover,),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Text('09 ',style: TextStyle(fontFamily: 'RM',fontSize: 16,color: Color(0xffC00135),),),
+                                                  Text('Sep ',style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Color(0xffC00135),),),
+                                                ],
+                                              ),
                                             ),
                                             Container(
                                               child: Column(
@@ -153,7 +159,7 @@ class _MYOrderDetailsState extends State<MYOrderDetails> {
                                               ),
                                             ),
                                             Container(
-                                              child:  Text('13,450',style: TextStyle(fontFamily: 'RB',fontSize: 18,color:tn.primaryColor,letterSpacing: 0.1),),
+                                              child:  Text('11.30 AM',style: TextStyle(fontFamily: 'RM',fontSize: 14,color:tn.primaryColor,letterSpacing: 0.1),),
                                             )
                                           ],
                                         ),

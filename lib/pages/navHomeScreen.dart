@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-
 import '../notifier/themeNotifier.dart';
 import '../utils/sizeLocal.dart';
+import 'HomePage/Appointment.dart';
 import 'HomePage/Cartpage.dart';
 import 'HomePage/LandingPage.dart';
 import 'HomePage/Notification.dart';
 import 'HomePage/ViewProfile.dart';
+import 'Product/AddUserDetails.dart';
+import 'Product/ProductDetails.dart';
 import 'loginpage/login.dart';
 import 'myOrder/myOrderDetails.dart';
 import 'theme-file.dart';
@@ -93,7 +95,7 @@ class _MasterpageState extends State<Masterpage> {
                    SizedBox(height: 20,),
                    Container(
                      child: Text('Mr. Balasubramaniyan v'
-                         ,style: TextStyle(fontFamily: 'RR',fontSize: 24,color: Colors.white,letterSpacing: 0.1),),
+                         ,style: TextStyle(fontFamily: 'RR',fontSize: 20,color: Colors.white,letterSpacing: 0.1),),
                    ),
                    SizedBox(height: 5,),
                    Container(
@@ -115,16 +117,16 @@ class _MasterpageState extends State<Masterpage> {
                     title: 'Appointment',
                     ontap: (){
                       setState(() {
-                        menuSel=1;
+                        menuSel=2;
                       });
                       scaffoldkey.currentState!.openEndDrawer();
                     },
                 ),
                DrawerContent(
-                 title: 'Chat',
+                 title: 'Add User',
                  ontap: (){
                    setState(() {
-                     menuSel=2;
+                     menuSel=3;
                    });
                    scaffoldkey.currentState!.openEndDrawer();
                  },
@@ -133,25 +135,25 @@ class _MasterpageState extends State<Masterpage> {
                  title: 'Orders History',
                  ontap: (){
                    setState(() {
-                     menuSel=3;
+                     menuSel=4;
                    });
                    scaffoldkey.currentState!.openEndDrawer();
                  },
                ),
                 DrawerContent(
-                  title: 'Invite Friens',
+                  title: 'Products',
                   ontap: (){
                     setState(() {
-                      menuSel=4;
+                      menuSel=5;
                     });
                     scaffoldkey.currentState!.openEndDrawer();
                   },
                 ),
                DrawerContent(
-                 title: 'Notification',
+                 title: 'Notifications',
                  ontap: (){
                    setState(() {
-                     menuSel=5;
+                     menuSel=6;
                    });
                    scaffoldkey.currentState!.openEndDrawer();
                  },
@@ -160,7 +162,7 @@ class _MasterpageState extends State<Masterpage> {
                  title: 'Settings',
                  ontap: (){
                    setState(() {
-                     menuSel=6;
+                     menuSel=7;
                    });
                    scaffoldkey.currentState!.openEndDrawer();
                  },
@@ -180,17 +182,37 @@ class _MasterpageState extends State<Masterpage> {
             voidCallback:(){
               scaffoldkey.currentState!.openDrawer();
             },
-          ) :menuSel==6?ThemeSettings (
+          ) :menuSel==2?AppointmentDetails (
             voidCallback:(){
 
               scaffoldkey.currentState!.openDrawer();
             },
-          ):menuSel==3?MYOrderDetails (
+          ):menuSel==3?AddUserDetails (
             voidCallback:(){
 
               scaffoldkey.currentState!.openDrawer();
             },
-          ) :Container(),
+          ) :menuSel==4?MYOrderDetails (
+            voidCallback:(){
+
+              scaffoldkey.currentState!.openDrawer();
+            },
+          ):menuSel==5?ProductAddView (
+            voidCallback:(){
+
+              scaffoldkey.currentState!.openDrawer();
+            },
+          ):menuSel==6?NotificationBar (
+            voidCallback:(){
+
+              scaffoldkey.currentState!.openDrawer();
+            },
+          ): menuSel==7?ThemeSettings (
+            voidCallback:(){
+
+              scaffoldkey.currentState!.openDrawer();
+            },
+          ):Container(),
         ),
       ),
 
@@ -213,7 +235,7 @@ class DrawerContent extends StatelessWidget {
       builder:(ctx,tn,child)=>  GestureDetector(
         onTap: ontap,
         child: Container(
-          height: 50,
+          height: 40,
           width: width,
           color: Colors.transparent,
           margin: EdgeInsets.only(top: 5,bottom: 5,left:20 ),
@@ -233,7 +255,7 @@ class DrawerContent extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("$title",
-                    style: TextStyle(fontFamily: 'RR',fontSize: 20,color: Colors.white,letterSpacing: 0.1),
+                    style: TextStyle(fontFamily: 'RR',fontSize: 18,color: Colors.white,letterSpacing: 0.1),
                   ),
                 ],
               )

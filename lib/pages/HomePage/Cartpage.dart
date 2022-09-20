@@ -154,7 +154,7 @@ class _CartPageState extends State<CartPage> {
                                         Row(
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
-                                            addRemoveBtn(Icon(Icons.add,color: tn.primaryColor,size: 25,)),
+                                            addRemoveBtn(Icon(Icons.remove,color: tn.primaryColor,size: 25,)),
                                             Container(
                                               height: 40,
                                               width: 40,
@@ -171,7 +171,7 @@ class _CartPageState extends State<CartPage> {
                                                 child: Text("1X",style: gridTextColor15 ,),
                                               ),
                                             ),
-                                            addRemoveBtn(Icon(Icons.remove,color: tn.primaryColor,size: 25,)),
+                                            addRemoveBtn(Icon(Icons.add,color: tn.primaryColor,size: 25,)),
                                           ],
 
                                         ),

@@ -58,6 +58,8 @@ dependencies:
   firebase_crashlytics:
   google_geocoding: ^0.2.0
   package_info_plus: ^1.4.0
+  agora_rtc_engine:
+  permission_handler:
 
 dev_dependencies:
   flutter_test:

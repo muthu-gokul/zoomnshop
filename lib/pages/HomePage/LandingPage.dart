@@ -105,9 +105,9 @@ class _HomePageState extends State<HomePage> {
                                     children: [
                                       Text('call',style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.black,fontWeight: FontWeight.bold),),
                                       GestureDetector(
-                                        // onTap:(){
-                                        //   testBtmSheetSlot();
-                                        // },
+                                          onTap:(){
+                                            Navigator.push(context, MaterialPageRoute(builder: (ctx)=>MyApp()));
+                                          },
                                         child: Container(
                                           // padding: const EdgeInsets.only(right: 8.0),
                                           child: Image.asset('assets/images/loginpages/camera.png',height: 45,),

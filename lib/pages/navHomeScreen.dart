@@ -7,7 +7,7 @@ import 'HomePage/Appointment.dart';
 import 'HomePage/Cartpage.dart';
 import 'HomePage/LandingPage.dart';
 import 'HomePage/Notification.dart';
-import 'HomePage/ViewProfile.dart';
+import 'Pofile/ViewProfile.dart';
 import 'Product/AddUserDetails.dart';
 import 'Product/ProductDetails.dart';
 import 'loginpage/login.dart';

@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:zoomnshop/pages/HomePage/ViewProfile.dart';
+import 'package:zoomnshop/pages/Pofile/ViewProfile.dart';
 import 'package:zoomnshop/pages/myOrder/OrderDeliveryDetails.dart';
 import 'package:zoomnshop/pages/myOrder/myOrderDetails.dart';
 

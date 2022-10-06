@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:zoomnshop/pages/Pofile/myProfileEdit.dart';
 
 import '../../notifier/themeNotifier.dart';
 import '../../utils/sizeLocal.dart';
@@ -207,9 +208,14 @@ class _ViewProfileState extends State<ViewProfile> {
                             ],
                           ),
                         ),
-                        Container(
-                            margin: EdgeInsets.only(left: 10,right: 10),
-                            child: SvgPicture.asset("assets/images/icons/edit-icon.svg",color:tn.primaryColor,height: 30,fit: BoxFit.cover,)
+                        GestureDetector(
+                          onTap:(){
+                            Navigator.push(context, MaterialPageRoute(builder: (ctx)=>MyProfileEdit()));
+                          },
+                          child: Container(
+                              margin: EdgeInsets.only(left: 10,right: 10),
+                              child: SvgPicture.asset("assets/images/icons/edit-icon.svg",color:tn.primaryColor,height: 30,fit: BoxFit.cover,)
+                          ),
                         )
                       ],
                     ),

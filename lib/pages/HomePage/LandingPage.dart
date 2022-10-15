@@ -106,7 +106,8 @@ class _HomePageState extends State<HomePage> {
                                       Text('call',style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.black,fontWeight: FontWeight.bold),),
                                       GestureDetector(
                                           onTap:(){
-                                            Navigator.push(context, MaterialPageRoute(builder: (ctx)=>MyApp()));
+                                            showPreview(true,"Muthu",'https://zoomnshop.app.100ms.live/meeting/Classroom');
+                                          //  Navigator.push(context, MaterialPageRoute(builder: (ctx)=>HomePageVideoCall()));
                                           },
                                         child: Container(
                                           // padding: const EdgeInsets.only(right: 8.0),
@@ -634,3 +635,24 @@ class _HomePageState extends State<HomePage> {
   }
 
 }
+
+
+
+class TAA extends StatefulWidget {
+  const TAA({Key? key}) : super(key: key);
+
+  @override
+  State<TAA> createState() => _TAAState();
+}
+
+class _TAAState extends State<TAA> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: WebView(
+
+      ),
+    );
+  }
+}
+

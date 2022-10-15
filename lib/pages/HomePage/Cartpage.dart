@@ -221,7 +221,7 @@ class _CartPageState extends State<CartPage> {
                             ),
                           ),
                           Container(
-                            width: SizeConfig.screenWidth!!*0.65,
+                            width: SizeConfig.screenWidth!*0.65,
                             decoration: BoxDecoration(
                               border: Border(bottom: BorderSide( //                    <--- top side
                                 color: Color(0XFFF5F6FA),

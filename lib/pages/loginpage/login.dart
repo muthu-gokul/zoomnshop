@@ -6,6 +6,7 @@ import 'package:zoomnshop/pages/loginpage/OtpGenerat.dart';
 import '../../styles/constants.dart';
 import '../../styles/style.dart';
 import '../../utils/sizeLocal.dart';
+import '../navHomeScreen.dart';
 import 'EnterEmail.dart';
 
 class loginPage extends StatefulWidget {
@@ -235,10 +236,10 @@ class _loginPageState extends State<loginPage> with SingleTickerProviderStateMix
                                             SizedBox(height: 20,),
                                             GestureDetector(
                                               onTap: (){
-                                                if(_loginFormKey.currentState!.validate()){
+                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>Masterpage()),);
+                                                /*if(_loginFormKey.currentState!.validate()){
 
-                                                }
-                                                // Navigator.push(context, pr.PageRoute().fade(SecurityDetails()));
+                                                }*/
                                               },
                                               child: Container(
                                                 height: 60,

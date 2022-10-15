@@ -2,6 +2,8 @@
 import 'dart:convert';
 
 //Package imports
+import 'package:get/get.dart';
+
 import '../common/constant.dart';
 import 'package:http/http.dart' as http;
 
@@ -82,3 +84,6 @@ class RoomService {
     return [subDomain, code, isProd ? "true" : "false"];
   }
 }
+
+
+var showVideo=true.obs;

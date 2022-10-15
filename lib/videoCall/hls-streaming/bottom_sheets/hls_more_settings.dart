@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ import '../../../../videoCall/hls-streaming/bottom_sheets/hls_start_bottom_sheet
 import '../../../../videoCall/hls-streaming/bottom_sheets/meeting_mode_sheet.dart';
 import '../../../../videoCall/data_store/meeting_store.dart';
 import 'package:provider/provider.dart';
+
+import '../../service/room_service.dart';
 
 class HLSMoreSettings extends StatefulWidget {
   @override
@@ -74,7 +77,9 @@ class _HLSMoreSettingsState extends State<HLSMoreSettings> {
                     ListTile(
                       horizontalTitleGap: 2,
                       onTap: () async {
+
                         Navigator.pop(context);
+                        showVideo.value=false;
                         showModalBottomSheet(
                           isScrollControlled: true,
                           backgroundColor: themeBottomSheetColor,
@@ -85,7 +90,9 @@ class _HLSMoreSettingsState extends State<HLSMoreSettings> {
                           builder: (ctx) => ChangeNotifierProvider.value(
                               value: context.read<MeetingStore>(),
                               child: HLSDeviceSettings()),
-                        );
+                        ).then((value){
+                          showVideo.value=true;
+                        });
                       },
                       contentPadding: EdgeInsets.zero,
                       leading: SvgPicture.asset(
@@ -107,6 +114,7 @@ class _HLSMoreSettingsState extends State<HLSMoreSettings> {
                     horizontalTitleGap: 2,
                     onTap: () async {
                       Navigator.pop(context);
+                      showVideo.value=false;
                       showModalBottomSheet(
                         isScrollControlled: true,
                         backgroundColor: themeBottomSheetColor,
@@ -117,7 +125,10 @@ class _HLSMoreSettingsState extends State<HLSMoreSettings> {
                         builder: (ctx) => ChangeNotifierProvider.value(
                             value: context.read<MeetingStore>(),
                             child: MeetingModeSheet()),
-                      );
+                      ).then((value){
+                        showVideo.value=true;
+                      });
+
                     },
                     contentPadding: EdgeInsets.zero,
                     leading: SvgPicture.asset(
@@ -174,6 +185,7 @@ class _HLSMoreSettingsState extends State<HLSMoreSettings> {
                     horizontalTitleGap: 2,
                     onTap: () {
                       _meetingStore.toggleSpeaker();
+                      showVideo.value=true;
                       Navigator.pop(context);
                     },
                     contentPadding: EdgeInsets.zero,
@@ -198,6 +210,7 @@ class _HLSMoreSettingsState extends State<HLSMoreSettings> {
                     horizontalTitleGap: 2,
                     onTap: () {
                       _meetingStore.switchCamera();
+                      showVideo.value=true;
                       Navigator.pop(context);
                     },
                     contentPadding: EdgeInsets.zero,
@@ -216,7 +229,7 @@ class _HLSMoreSettingsState extends State<HLSMoreSettings> {
                           fontWeight: FontWeight.w600),
                     ),
                   ),
-                  ListTile(
+                  /*ListTile(
                     horizontalTitleGap: 2,
                     onTap: () async {
                       _meetingStore.changeMetadataBRB();
@@ -258,9 +271,8 @@ class _HLSMoreSettingsState extends State<HLSMoreSettings> {
                             color: themeDefaultColor,
                             letterSpacing: 0.25,
                             fontWeight: FontWeight.w600),
-                      )),
-                  if (_meetingStore.localPeer?.role.permissions.changeRole ??
-                      false)
+                      )),*/
+                  if (_meetingStore.localPeer?.role.permissions.changeRole ?? false)
                     ListTile(
                         horizontalTitleGap: 2,
                         onTap: () async {
@@ -283,8 +295,9 @@ class _HLSMoreSettingsState extends State<HLSMoreSettings> {
                               color: themeDefaultColor,
                               letterSpacing: 0.25,
                               fontWeight: FontWeight.w600),
-                        )),
-                  if (!(_meetingStore.localPeer?.role.name.contains("hls-") ??
+                        )
+                    ),
+                  /*if (!(_meetingStore.localPeer?.role.name.contains("hls-") ??
                       true))
                     Selector<MeetingStore, bool>(
                         selector: (_, meetingStore) =>
@@ -339,8 +352,8 @@ class _HLSMoreSettingsState extends State<HLSMoreSettings> {
                                     letterSpacing: 0.25,
                                     fontWeight: FontWeight.w600),
                               ));
-                        }),
-                  if (!(_meetingStore.localPeer?.role.name.contains("hls-") ??
+                        }),*/
+                  /*if (!(_meetingStore.localPeer?.role.name.contains("hls-") ??
                       true))
                     Selector<MeetingStore, bool>(
                         selector: (_, meetingStore) =>
@@ -382,8 +395,8 @@ class _HLSMoreSettingsState extends State<HLSMoreSettings> {
                                     letterSpacing: 0.25,
                                     fontWeight: FontWeight.w600),
                               ));
-                        }),
-                  if (!(_meetingStore.localPeer?.role.name.contains("hls-") ??
+                        }),*/
+                  /*if (!(_meetingStore.localPeer?.role.name.contains("hls-") ??
                       true))
                     Selector<MeetingStore, bool>(
                         selector: ((_, meetingStore) =>
@@ -432,8 +445,8 @@ class _HLSMoreSettingsState extends State<HLSMoreSettings> {
                                     letterSpacing: 0.25,
                                     fontWeight: FontWeight.w600),
                               ));
-                        }),
-                  if (!(_meetingStore.localPeer?.role.name.contains("hls-") ??
+                        }),*/
+                  /*if (!(_meetingStore.localPeer?.role.name.contains("hls-") ??
                       true))
                     ListTile(
                         horizontalTitleGap: 2,
@@ -475,14 +488,13 @@ class _HLSMoreSettingsState extends State<HLSMoreSettings> {
                               color: themeDefaultColor,
                               letterSpacing: 0.25,
                               fontWeight: FontWeight.w600),
-                        )),
-                  if (Platform.isAndroid && _meetingStore.isAudioShareStarted)
+                        )),*/
+                  /*if (Platform.isAndroid && _meetingStore.isAudioShareStarted)
                     ListTile(
                         horizontalTitleGap: 2,
                         onTap: () async {
                           if (_meetingStore.isAudioShareStarted)
-                            UtilityComponents.showChangeAudioMixingModeDialog(
-                                context);
+                            UtilityComponents.showChangeAudioMixingModeDialog(context);
                         },
                         contentPadding: EdgeInsets.zero,
                         leading: SvgPicture.asset(
@@ -496,10 +508,11 @@ class _HLSMoreSettingsState extends State<HLSMoreSettings> {
                               color: themeDefaultColor,
                               letterSpacing: 0.25,
                               fontWeight: FontWeight.w600),
-                        )),
+                        )),*/
                   ListTile(
                       horizontalTitleGap: 2,
                       onTap: () async {
+                        Navigator.pop(context);
                         UtilityComponents.onEndRoomPressed(context);
                       },
                       contentPadding: EdgeInsets.zero,

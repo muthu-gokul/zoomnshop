@@ -19,9 +19,11 @@ import 'package:hmssdk_flutter/hmssdk_flutter.dart';
 import '../../../../videoCall/common/ui/organisms/role_change_request_dialog.dart';
 import '../../../../videoCall/common/ui/organisms/track_change_request_dialog.dart';
 import '../../../../videoCall/data_store/meeting_store.dart';
+import '../../service/room_service.dart';
 
 class UtilityComponents {
   static Future<dynamic> onBackPressed(BuildContext context) {
+    showVideo.value=false;
     //return showDialog(context: context, builder: (ctx)=>AlertDialog(content: Text("hii"),));
     MeetingStore _meetingStore = context.read<MeetingStore>();
     return showDialog(
@@ -128,10 +130,13 @@ class UtilityComponents {
           )
         ],
       ),
-    );
+    ).then((value){
+      showVideo.value=true;
+    });
   }
 
   static Future<dynamic> onLeaveStudio(BuildContext context) {
+    showVideo.value=false;
     MeetingStore _meetingStore = context.read<MeetingStore>();
     return showDialog(
       context: context,
@@ -229,21 +234,27 @@ class UtilityComponents {
           )
         ],
       ),
-    );
+    ).then((value){
+      showVideo.value=true;
+    });
   }
 
   static void showRoleChangeDialog(
       HMSRoleChangeRequest event, BuildContext context) async {
+    showVideo.value=false;
     await showDialog(
         barrierDismissible: false,
         context: context,
         builder: (ctx) => RoleChangeDialogOrganism(
             roleChangeRequest: event,
-            meetingStore: context.read<MeetingStore>()));
+            meetingStore: context.read<MeetingStore>())).then((value){
+      showVideo.value=true;
+    });
   }
 
   static showTrackChangeDialog(
       BuildContext context, HMSTrackChangeRequest trackChangeRequest) async {
+    showVideo.value=false;
     MeetingStore _meetingStore = context.read<MeetingStore>();
     await showDialog(
         barrierDismissible: false,
@@ -252,10 +263,13 @@ class UtilityComponents {
               trackChangeRequest: trackChangeRequest,
               meetingStore: context.read<MeetingStore>(),
               isAudioModeOn: _meetingStore.meetingMode == MeetingMode.Audio,
-            ));
+            )).then((value){
+      showVideo.value=true;
+    });
   }
 
   static showonExceptionDialog(event, BuildContext context) {
+    showVideo.value=false;
     event = event as HMSException;
     var message =
         "${event.message} ${event.id ?? ""} ${event.code?.errorCode ?? ""} ${event.description} ${event.action} ${event.params ?? "".toString()}";
@@ -284,11 +298,14 @@ class UtilityComponents {
               ),
             ],
           );
-        });
+        }).then((value){
+      showVideo.value=true;
+    });
   }
 
   static Future<String> showInputDialog(
       {context, String placeholder = "", String prefilledValue = ""}) async {
+    showVideo.value=false;
     TextEditingController textController = TextEditingController();
     if (prefilledValue.isNotEmpty) {
       textController.text = prefilledValue;
@@ -338,12 +355,16 @@ class UtilityComponents {
                   },
                 ),
               ],
-            ));
+            )).then((value){
+      showVideo.value=true;
+      return "true";
+    });
 
     return answer;
   }
 
   static showHLSDialog({required BuildContext context}) async {
+    showVideo.value=false;
     TextEditingController textController = TextEditingController();
     textController.text = Constant.streamingUrl;
     bool isSingleFileChecked = false, isVODChecked = false;
@@ -429,11 +450,14 @@ class UtilityComponents {
                   ),
                 ],
               );
-            }));
+            })).then((value){
+      showVideo.value=true;
+    });
   }
 
   static showRoleList(BuildContext context, List<HMSRole> roles,
       MeetingStore _meetingStore) async {
+    showVideo.value=false;
     List<HMSRole> _selectedRoles = [];
     bool muteAll = false;
     showDialog(
@@ -536,7 +560,9 @@ class UtilityComponents {
                       ),
                     )),
               );
-            }));
+            })).then((value){
+      showVideo.value=true;
+    });
   }
 
   static Future<Map<String, dynamic>> showRTMPInputDialog(
@@ -544,6 +570,7 @@ class UtilityComponents {
       String placeholder = "",
       String prefilledValue = "",
       bool isRecordingEnabled = false}) async {
+    showVideo.value=false;
     TextEditingController textController = TextEditingController();
     if (prefilledValue.isNotEmpty) {
       textController.text = prefilledValue;
@@ -658,12 +685,16 @@ class UtilityComponents {
                   )
                 ],
               );
-            }));
+            })).then((value){
+      showVideo.value=true;
+      return {};
+    });
 
     return answer;
   }
 
   static Future<dynamic> onEndRoomPressed(BuildContext context) {
+    showVideo.value=false;
     MeetingStore _meetingStore = context.read<MeetingStore>();
     return showDialog(
       context: context,
@@ -771,7 +802,9 @@ class UtilityComponents {
           )
         ],
       ),
-    );
+    ).then((value){
+      showVideo.value=true;
+    });
   }
 
   static Widget rotateScreen(BuildContext context) {
@@ -800,6 +833,7 @@ class UtilityComponents {
       required String errorTitle,
       required String actionMessage,
       required Function() action}) async {
+    showVideo.value=false;
     bool? res = await showDialog(
         barrierDismissible: false,
         context: context,
@@ -851,7 +885,9 @@ class UtilityComponents {
               ],
             ),
           );
-        });
+        }).then((value){
+      showVideo.value=true;
+    });
     return res ?? false;
   }
 
@@ -922,6 +958,7 @@ class UtilityComponents {
       required String actionText,
       required String ignoreText,
       bool leaveRoom = false}) {
+    showVideo.value=false;
     MeetingStore _meetingStore = context.read<MeetingStore>();
     return showDialog(
       context: context,
@@ -1031,11 +1068,14 @@ class UtilityComponents {
           )
         ],
       ),
-    );
+    ).then((value){
+      showVideo.value=true;
+    });
   }
 
   static Future<String> showNameChangeDialog(
       {context, String placeholder = "", String prefilledValue = ""}) async {
+    showVideo.value=false;
     TextEditingController textController =
         TextEditingController(text: prefilledValue);
     if (prefilledValue.isNotEmpty) {
@@ -1147,12 +1187,16 @@ class UtilityComponents {
                   ],
                 )
               ],
-            ));
+            )).then((value){
+      showVideo.value=true;
+      return "true";
+    });
 
     return answer;
   }
 
   static void showChangeAudioMixingModeDialog(BuildContext context) {
+    showVideo.value=false;
     HMSAudioMixingMode valueChoose = HMSAudioMixingMode.TALK_AND_MUSIC;
     double width = MediaQuery.of(context).size.width;
     MeetingStore _meetingStore = context.read<MeetingStore>();
@@ -1313,13 +1357,16 @@ class UtilityComponents {
                   )
                 ],
               );
-            }));
+            })).then((value){
+      showVideo.value=true;
+    });
   }
 
   static Future<String> showAudioShareDialog(
       {required BuildContext context,
       required MeetingStore meetingStore,
       required bool isPlaying}) async {
+    showVideo.value=false;
     double volume = meetingStore.audioPlayerVolume;
     String answer = await showDialog(
         context: context,
@@ -1427,8 +1474,10 @@ class UtilityComponents {
                   )
                 ],
               );
-            }));
-
+            })).then((value){
+      showVideo.value=true;
+      return "true";
+    });
     return answer;
   }
 }

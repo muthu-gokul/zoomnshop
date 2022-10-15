@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:focus_detector/focus_detector.dart';
 import 'package:hmssdk_flutter/hmssdk_flutter.dart';
+import 'package:zoomnshop/videoCall/service/room_service.dart';
 import '../../../common/ui/organisms/change_role_options.dart';
 import '../../../common/ui/organisms/local_peer_tile_dialog.dart';
 import '../../../common/util/app_color.dart';
@@ -57,7 +58,8 @@ class _VideoTileState extends State<VideoTile> {
         _meetingStore.localPeer?.role.permissions.removeOthers ?? false;
     bool changeRolePermission =
         _meetingStore.localPeer?.role.permissions.changeRole ?? false;
-    return Container(height: 300,width: 300,color: Colors.pinkAccent,
+    /*return Container(
+      //height: 300,width: 300,color: Colors.pinkAccent,
       child: FocusDetector(
         onFocusLost: () {
           if (mounted) {
@@ -94,7 +96,7 @@ class _VideoTileState extends State<VideoTile> {
                       itemWidth: widget.itemWidth,
                     ),
 
-                   /* Semantics(
+                   *//* Semantics(
                       label:
                       "fl_${context.read<PeerTrackNode>().peer.name}_degraded_tile",
                       child: DegradeTile(
@@ -142,7 +144,7 @@ class _VideoTileState extends State<VideoTile> {
                         itemHeight: widget.itemHeight,
                         itemWidth: widget.itemWidth,
                         name: context.read<PeerTrackNode>().peer.name,
-                        uid: context.read<PeerTrackNode>().uid)*/
+                        uid: context.read<PeerTrackNode>().uid)*//*
                   ],
                 ),
               ),
@@ -157,7 +159,7 @@ class _VideoTileState extends State<VideoTile> {
               margin: EdgeInsets.all(2),
               height: widget.itemHeight + 110,
               width: widget.itemWidth - 5.0,
-             /* child: Stack(
+             *//* child: Stack(
                 children: [
                   VideoView(
                     uid: context.read<PeerTrackNode>().uid,
@@ -190,10 +192,12 @@ class _VideoTileState extends State<VideoTile> {
                         : SizedBox(),
                   )
                 ],
-              ),*/
+              ),*//*
             ),
       ),
-    );
+    );*/
+
+
     return Semantics(
       label: "fl_${context.read<PeerTrackNode>().peer.name}_video_tile",
       child: FocusDetector(
@@ -221,54 +225,60 @@ class _VideoTileState extends State<VideoTile> {
                       !removePeerPermission ||
                       !changeRolePermission) return;
                   if (peerTrackNode.peer.peerId !=
-                      _meetingStore.localPeer!.peerId)
+                      _meetingStore.localPeer!.peerId){
+                    showVideo.value=false;
                     showDialog(
                         context: context,
                         builder: (_) => RemotePeerTileDialog(
-                              isAudioMuted:
-                                  peerTrackNode.audioTrack?.isMute ?? true,
-                              isVideoMuted: peerTrackNode.track == null
-                                  ? true
-                                  : peerTrackNode.track!.isMute,
-                              peerName: peerNode.name,
-                              changeVideoTrack: (mute, isVideoTrack) {
-                                Navigator.pop(context);
-                                _meetingStore.changeTrackState(
-                                    peerTrackNode.track!, mute);
-                              },
-                              changeAudioTrack: (mute, isAudioTrack) {
-                                Navigator.pop(context);
-                                _meetingStore.changeTrackState(
-                                    peerTrackNode.audioTrack!, mute);
-                              },
-                              removePeer: () async {
-                                Navigator.pop(context);
-                                var peer = await _meetingStore.getPeer(
-                                    peerId: peerNode.peerId);
-                                _meetingStore.removePeerFromRoom(peer!);
-                              },
-                              changeRole: () {
-                                Navigator.pop(context);
-                                showDialog(
-                                    context: context,
-                                    builder: (_) => ChangeRoleOptionDialog(
-                                          peerName: peerNode.name,
-                                          roles: _meetingStore.roles,
-                                          peer: peerNode,
-                                          changeRole: (role, forceChange) {
-                                            _meetingStore.changeRole(
-                                                peer: peerNode,
-                                                roleName: role,
-                                                forceChange: forceChange);
-                                          },
-                                        ));
-                              },
-                              mute: mutePermission,
-                              unMute: unMutePermission,
-                              removeOthers: removePeerPermission,
-                              roles: changeRolePermission,
-                            ));
-                  else
+                          isAudioMuted:
+                          peerTrackNode.audioTrack?.isMute ?? true,
+                          isVideoMuted: peerTrackNode.track == null
+                              ? true
+                              : peerTrackNode.track!.isMute,
+                          peerName: peerNode.name,
+                          changeVideoTrack: (mute, isVideoTrack) {
+                            Navigator.pop(context);
+                            _meetingStore.changeTrackState(
+                                peerTrackNode.track!, mute);
+                          },
+                          changeAudioTrack: (mute, isAudioTrack) {
+                            Navigator.pop(context);
+                            _meetingStore.changeTrackState(
+                                peerTrackNode.audioTrack!, mute);
+                          },
+                          removePeer: () async {
+                            Navigator.pop(context);
+                            var peer = await _meetingStore.getPeer(
+                                peerId: peerNode.peerId);
+                            _meetingStore.removePeerFromRoom(peer!);
+                          },
+                          changeRole: () {
+                            Navigator.pop(context);
+                            showDialog(
+                                context: context,
+                                builder: (_) => ChangeRoleOptionDialog(
+                                  peerName: peerNode.name,
+                                  roles: _meetingStore.roles,
+                                  peer: peerNode,
+                                  changeRole: (role, forceChange) {
+                                    _meetingStore.changeRole(
+                                        peer: peerNode,
+                                        roleName: role,
+                                        forceChange: forceChange);
+                                  },
+                                ));
+                          },
+                          mute: mutePermission,
+                          unMute: unMutePermission,
+                          removeOthers: removePeerPermission,
+                          roles: changeRolePermission,
+                        )).then((value){
+                      showVideo.value=true;
+                    });
+                  }
+
+                  else{
+                    showVideo.value=false;
                     showDialog(
                         context: context,
                         builder: (_) => LocalPeerTileDialog(
@@ -283,27 +293,31 @@ class _VideoTileState extends State<VideoTile> {
                               showDialog(
                                   context: context,
                                   builder: (_) => ChangeRoleOptionDialog(
-                                        peerName: peerNode.name,
-                                        roles: _meetingStore.roles,
-                                        peer: peerNode,
-                                        changeRole: (role, forceChange) {
-                                          _meetingStore.changeRole(
-                                              peer: peerNode,
-                                              roleName: role,
-                                              forceChange: forceChange);
-                                        },
-                                      ));
+                                    peerName: peerNode.name,
+                                    roles: _meetingStore.roles,
+                                    peer: peerNode,
+                                    changeRole: (role, forceChange) {
+                                      _meetingStore.changeRole(
+                                          peer: peerNode,
+                                          roleName: role,
+                                          forceChange: forceChange);
+                                    },
+                                  ));
                             },
                             roles: changeRolePermission,
                             changeName: () async {
                               String name =
-                                  await UtilityComponents.showInputDialog(
-                                      context: context,
-                                      placeholder: "Enter Name");
+                              await UtilityComponents.showInputDialog(
+                                  context: context,
+                                  placeholder: "Enter Name");
                               if (name.isNotEmpty) {
                                 _meetingStore.changeName(name: name);
                               }
-                            }));
+                            })).then((value){
+                      showVideo.value=true;
+                    });
+                  }
+
                 },
                 child: Container(
                   key: key,

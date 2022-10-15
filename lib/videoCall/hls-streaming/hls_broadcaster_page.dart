@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hmssdk_flutter/hmssdk_flutter.dart';
+import 'package:zoomnshop/videoCall/service/room_service.dart';
 import '../common/ui/organisms/audio_device_change.dart';
 import '../common/ui/organisms/embedded_button.dart';
 import '../common/ui/organisms/full_screen_view.dart';
@@ -49,6 +50,7 @@ class HLSBroadcasterPage extends StatefulWidget {
 class _HLSBroadcasterPageState extends State<HLSBroadcasterPage> {
   @override
   void initState() {
+    showVideo.value=true;
     super.initState();
     checkAudioState();
   }
@@ -555,7 +557,8 @@ class _HLSBroadcasterPageState extends State<HLSBroadcasterPage> {
                                         width: 10,
                                       ),
                                       EmbeddedButton(
-                                        onTap: () => {
+                                        onTap: ()  {
+                                          showVideo.value=false;
                                           showModalBottomSheet(
                                             isScrollControlled: true,
                                             backgroundColor:
@@ -571,7 +574,9 @@ class _HLSBroadcasterPageState extends State<HLSBroadcasterPage> {
                                                         .read<MeetingStore>(),
                                                     child:
                                                         HLSParticipantSheet()),
-                                          )
+                                          ).then((value){
+                                            showVideo.value=true;
+                                          });
                                         },
                                         width: 40,
                                         height: 40,
@@ -594,10 +599,9 @@ class _HLSBroadcasterPageState extends State<HLSBroadcasterPage> {
                                           builder:
                                               (_, isNewMessageReceived, __) {
                                             return EmbeddedButton(
-                                              onTap: () => {
-                                                context
-                                                    .read<MeetingStore>()
-                                                    .setNewMessageFalse(),
+                                              onTap: () {
+                                                showVideo.value=false;
+                                                context.read<MeetingStore>().setNewMessageFalse();
                                                 showModalBottomSheet(
                                                   isScrollControlled: true,
                                                   backgroundColor:
@@ -613,7 +617,9 @@ class _HLSBroadcasterPageState extends State<HLSBroadcasterPage> {
                                                           value: context.read<
                                                               MeetingStore>(),
                                                           child: HLSMessage()),
-                                                )
+                                                ).then((value){
+                                                  showVideo.value=true;
+                                                });
                                               },
                                               width: 40,
                                               height: 40,
@@ -1033,12 +1039,13 @@ class _HLSBroadcasterPageState extends State<HLSBroadcasterPage> {
                                             null)
                                           EmbeddedButton(
                                             onTap: () async{
-                                                final result = await FlutterPlatformAlert.showAlert(
+                                                /*final result = await FlutterPlatformAlert.showAlert(
                                                 windowTitle: 'This ia title',
                                                 text: 'This is body',
-                                                alertStyle: AlertButtonStyle.okCancel);
+                                                alertStyle: AlertButtonStyle.okCancel);*/
                                               //Get.dialog(Container(height: 100,width: 100,color: Colors.red,))
-                                              /*showModalBottomSheet(
+                                              showVideo.value=false;
+                                              showModalBottomSheet(
                                                 isScrollControlled: true,
                                                 backgroundColor:
                                                     themeBottomSheetColor,
@@ -1051,9 +1058,10 @@ class _HLSBroadcasterPageState extends State<HLSBroadcasterPage> {
                                                     ChangeNotifierProvider.value(
                                                         value: context.read<
                                                             MeetingStore>(),
-                                                        child:
-                                                            HLSMoreSettings()),
-                                              )*/
+                                                        child: HLSMoreSettings()),
+                                              ).then((value){
+                                                showVideo.value=true;
+                                              });
                                             },
                                             width: 40,
                                             height: 40,

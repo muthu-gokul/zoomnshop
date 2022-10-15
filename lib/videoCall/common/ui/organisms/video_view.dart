@@ -1,5 +1,6 @@
 //Package imports
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../../../../../videoCall/model/peer_track_node.dart';
 import '../../../common/ui/organisms/audio_level_avatar.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +9,7 @@ import 'package:tuple/tuple.dart';
 //Project imports
 import 'package:hmssdk_flutter/hmssdk_flutter.dart';
 import '../../../data_store/meeting_store.dart';
+import '../../../service/room_service.dart';
 
 class VideoView extends StatefulWidget {
   final matchParent;
@@ -75,15 +77,18 @@ class _VideoViewState extends State<VideoView> {
                         width: 250,
                         color: Colors.greenAccent,
                       ),*/
-                      child: HMSVideoView(
-                        key: Key(data.item1!.trackId),
-                        scaleType: ScaleType.SCALE_ASPECT_FILL,
-                        track: data.item1!,
-                        setMirror: data.item1.runtimeType == HMSLocalVideoTrack
-                            ? context.read<MeetingStore>().isMirror
-                            : false,
-                        matchParent: false,
-                      ),
+                      child: Obx(() => Visibility(
+                        visible: showVideo.value,
+                        child: HMSVideoView(
+                          key: Key(data.item1!.trackId),
+                          scaleType: ScaleType.SCALE_ASPECT_FILL,
+                          track: data.item1!,
+                          setMirror: data.item1.runtimeType == HMSLocalVideoTrack
+                              ? context.read<MeetingStore>().isMirror
+                              : false,
+                          matchParent: false,
+                        ),
+                      )),
                     ),
                   );
           }

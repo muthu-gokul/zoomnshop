@@ -143,7 +143,7 @@ class BottomNavi extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Masterpage()),);
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>CustomerHomeScreen()),);
                     },
                     child: Container(
                       width: 40,

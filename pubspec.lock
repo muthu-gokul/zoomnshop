@@ -92,6 +92,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.16.0"
+  connectivity:
+    dependency: "direct main"
+    description:
+      name: connectivity
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.6"
   connectivity_checker:
     dependency: "direct main"
     description:
@@ -99,6 +106,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  connectivity_for_web:
+    dependency: transitive
+    description:
+      name: connectivity_for_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0+1"
+  connectivity_macos:
+    dependency: transitive
+    description:
+      name: connectivity_macos
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.1+2"
+  connectivity_platform_interface:
+    dependency: transitive
+    description:
+      name: connectivity_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   convert:
     dependency: transitive
     description:
@@ -148,6 +176,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.3.0"
+  device_info:
+    dependency: "direct main"
+    description:
+      name: device_info
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
+  device_info_platform_interface:
+    dependency: transitive
+    description:
+      name: device_info_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   draggable_widget:
     dependency: "direct main"
     description:
@@ -342,13 +384,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.0"
-  flutter_dialogs:
-    dependency: "direct main"
-    description:
-      name: flutter_dialogs
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.0"
   flutter_launcher_icons:
     dependency: "direct main"
     description:
@@ -368,13 +403,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_platform_alert:
-    dependency: "direct main"
-    description:
-      name: flutter_platform_alert
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:

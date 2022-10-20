@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class ColorUtil{
-  static Color primaryColor=Color(0xFF4B5AFF);
+  static Color primaryColor=Color(0xffFE316C);
   static Color primaryColor2=Color(0xFFF5CAB6);
   static Color primaryTextColor1=Color(0xFF8C8C8C);
   static Color primaryTextColor2=Color(0xFF383838);
@@ -11,4 +12,5 @@ class ColorUtil{
   static Color rating=Color(0xFFE4BE49);
   static Color grey1=Color(0xFFB9B9B9);
   static Color grey2=Color(0xFF838CA2);
+  static Color red=Colors.red;
 }

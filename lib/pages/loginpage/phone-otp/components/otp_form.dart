@@ -6,9 +6,7 @@ import '../../../../utils/sizeLocal.dart';
 
 
 class OtpForm extends StatefulWidget {
-  const OtpForm({
-    Key? key,
-  }) : super(key: key);
+  const OtpForm({Key? key,}) : super(key: key);
 
   @override
   _OtpFormState createState() => _OtpFormState();
@@ -57,7 +55,7 @@ class _OtpFormState extends State<OtpForm> {
                   child: TextFormField(
                     autofocus: true,
                     obscureText: true,
-                      obscuringCharacter: '*',
+                    obscuringCharacter: '*',
                     style: TextStyle(fontSize: 24),
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,

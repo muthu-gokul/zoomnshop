@@ -56,8 +56,7 @@ const Color addNewTextFieldFocusBorder=Color(0xFF6B6B6B);
  );
 
  final otpInputDecoration = InputDecoration(
-  contentPadding:
-  EdgeInsets.symmetric(vertical: 15),
+  contentPadding: EdgeInsets.symmetric(vertical: 15),
   border: outlineInputBorder(),
   focusedBorder: outlineInputBorder(),
   enabledBorder: outlineInputBorder(),

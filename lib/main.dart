@@ -2,9 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:zoomnshop/notifier/netConnectivityNotifier.dart';
 import '../pages/loginpage/login.dart';
 import 'package:wakelock/wakelock.dart';
 import 'notifier/themeNotifier.dart';
+import 'pages/loginpage/splashScreen.dart';
 
 /*void main() {
   runApp(const MyApp());
@@ -26,6 +28,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_)=>ThemeNotifier()),
+        ChangeNotifierProvider(create: (_)=>InternetNotifier()),
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
@@ -34,7 +37,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         // home:CarouselDemo(),
-        home: loginPage(),
+        home: SplashScreen(),
         //  home: ViewProductDetails(),
       ),
     );

@@ -52,7 +52,6 @@ class RoomService {
       print("codeAndDomain[0] ${codeAndDomain[0]}");
       print("res ${response.body}");
       var body = json.decode(response.body);
-
       return [body['token'], codeAndDomain[2]!.trim()];
     }
     catch (e) {

@@ -44,7 +44,7 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
     SizeConfig().init(context);
     return SafeArea(
         child: Consumer<ThemeNotifier>(
-        builder:(ctx,tn,child)=> Stack(
+          builder:(ctx,tn,child)=> Stack(
           children: [
             Scaffold(
               body: Container(
@@ -183,7 +183,6 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
           ],
 
         )
-
         )
     );
   }

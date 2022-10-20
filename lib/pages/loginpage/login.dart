@@ -1,21 +1,32 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:zoomnshop/constants/sp.dart';
+import 'package:zoomnshop/notifier/configuration.dart';
 import 'package:zoomnshop/pages/loginpage/OtpGenerat.dart';
 
+import '../../api/ApiManager.dart';
+import '../../model/parameterMode.dart';
+import '../../notifier/netConnectivityNotifier.dart';
 import '../../styles/constants.dart';
 import '../../styles/style.dart';
 import '../../utils/sizeLocal.dart';
+import '../../widgets/alertDialog.dart';
 import '../navHomeScreen.dart';
 import 'EnterEmail.dart';
 
-class loginPage extends StatefulWidget {
-  const loginPage({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
   @override
-  _loginPageState createState() => _loginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _loginPageState extends State<loginPage> with SingleTickerProviderStateMixin{
+class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin{
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
   TextEditingController username = new TextEditingController();
   TextEditingController password = new TextEditingController();
@@ -105,11 +116,11 @@ class _loginPageState extends State<loginPage> with SingleTickerProviderStateMix
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Container(
-                                  child: Text('Welcom to',style: TextStyle(fontSize: 16,fontFamily: 'RB',color: Color(0XFF000000)),)
+                                  child: Text('Welcome to',style: TextStyle(fontSize: 16,fontFamily: 'RB',color: Color(0XFF000000)),)
                               ),
                               SizedBox(height: 10,),
                               Container(
-                                  child: Text('Zoom N Shop',style: TextStyle(fontSize: 20,fontFamily: 'RB',color: Color(0XFFFE316C)),)
+                                  child: Text('ZoomNShop',style: TextStyle(fontSize: 20,fontFamily: 'RB',color: Color(0XFFFE316C)),)
                               ),
                             ],
                           ) ,
@@ -236,10 +247,8 @@ class _loginPageState extends State<loginPage> with SingleTickerProviderStateMix
                                             SizedBox(height: 20,),
                                             GestureDetector(
                                               onTap: (){
-                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>Masterpage()),);
-                                                /*if(_loginFormKey.currentState!.validate()){
-
-                                                }*/
+                                                //Navigator.push(context, MaterialPageRoute(builder: (context)=>Masterpage()),);
+                                                login();
                                               },
                                               child: Container(
                                                 height: 60,
@@ -267,5 +276,69 @@ class _loginPageState extends State<loginPage> with SingleTickerProviderStateMix
           ),
         ),
     );
+  }
+  login() async{
+    node.unfocus();
+    //var loginNotifier=Provider.of<LoginNotifier>(context, listen: false);
+    var inn=Provider.of<InternetNotifier>(context, listen: false);
+    if(_loginFormKey.currentState!.validate()){
+      setState(() {
+        isLoading=true;
+      });
+      try{
+        if(inn.isOnline){
+          List<ParameterModel> params=[];
+          params.add(ParameterModel(Key: "SpName", Type: "String", Value: Sp.loginSp));
+          params.add(ParameterModel(Key: "UserName", Type: "String", Value: username.text));
+          params.add(ParameterModel(Key: "Password", Type: "String", Value: password.text));
+          params.add(ParameterModel(Key: "DeviceId", Type: "String", Value: getDeviceId()));
+          params.add(ParameterModel(Key: "Type", Type: "String", Value: 1));
+          params.add(ParameterModel(Key: "MPINNumber", Type: "String", Value: null));
+          params.add(ParameterModel(Key: "OTPNumber", Type: "String", Value: null));
+          ApiManager().GetInvokeLogin(params).then((response){
+            if(response[0]){
+              setState(() {
+                isLoading=false;
+              });
+              var parsed=json.decode(response[1]);log("$parsed");
+              /*
+              return;*/
+              var t =parsed['Table'];
+              if(t.length>0){
+                if(t[0]['UserTypeId']==2){
+                  setSharedPrefString(t[0]['LoginUserId'], SP_USER_ID);
+                  setSharedPrefString(t[0]['UserPINNumber'], SP_PIN);
+                  setSharedPrefString(username.text, SP_USEREMAIL);
+                  setSharedPrefString(password.text, SP_USERPASSWORD);
+                  Get.off(CustomerHomeScreen());
+                }
+                else{
+                  CustomAlert().commonErrorAlert("Access Denied", "");
+                }
+              }
+
+            }
+            else{
+              setState(() {
+                isLoading=false;
+              });
+            }
+          });
+        }
+        else{
+          setState(() {
+            isLoading=false;
+          });
+          CustomAlert().commonErrorAlert( "No Internet"," ");
+        }
+      }
+      catch(e){
+        setState(() {
+          isLoading=false;
+        });
+        CustomAlert().commonErrorAlert( "$e"," ");
+      }
+
+    }
   }
 }

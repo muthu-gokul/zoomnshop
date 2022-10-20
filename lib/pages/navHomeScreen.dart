@@ -12,16 +12,17 @@ import 'Product/AddUserDetails.dart';
 import 'Product/ProductDetails.dart';
 import 'loginpage/login.dart';
 import 'myOrder/myOrderDetails.dart';
+import 'settings/settingsHomePage.dart';
 import 'theme-file.dart';
 
-class Masterpage extends StatefulWidget {
-  const Masterpage({Key? key}) : super(key: key);
+class CustomerHomeScreen extends StatefulWidget {
+  const CustomerHomeScreen({Key? key}) : super(key: key);
 
   @override
-  _MasterpageState createState() => _MasterpageState();
+  _CustomerHomeScreenState createState() => _CustomerHomeScreenState();
 }
 
-class _MasterpageState extends State<Masterpage> {
+class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   @override
   GlobalKey <ScaffoldState> scaffoldkey=new GlobalKey<ScaffoldState>();
   int menuSel=1;
@@ -171,7 +172,7 @@ class _MasterpageState extends State<Masterpage> {
                 DrawerContent(
                   title: 'LogOut',
                   ontap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>loginPage()),);
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()),);
                   },
                 ),
                 // Divider(color: Color(0xff099FAF),thickness: 0.1,),
@@ -207,7 +208,7 @@ class _MasterpageState extends State<Masterpage> {
 
               scaffoldkey.currentState!.openDrawer();
             },
-          ): menuSel==7?ThemeSettings (
+          ): menuSel==7?SettingsHomePage (
             voidCallback:(){
 
               scaffoldkey.currentState!.openDrawer();

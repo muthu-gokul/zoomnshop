@@ -81,7 +81,7 @@ class _OrderSuccessfulState extends State<OrderSuccessful> {
                       Spacer(),
                       GestureDetector(
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>Masterpage()),);
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>CustomerHomeScreen()),);
                         },
                         child: Container(
                           height: 60,

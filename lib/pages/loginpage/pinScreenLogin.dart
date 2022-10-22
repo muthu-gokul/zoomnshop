@@ -31,6 +31,8 @@ class _PinScreenLoginState extends State<PinScreenLogin> {
           children: [
             Text("Welcome Back...",style: ts18(ColorUtil.primaryTextColor2),),
             const SizedBox(height: 20,),
+            Text("Enter Pin",style: ts18(ColorUtil.primaryTextColor2),),
+            const SizedBox(height: 20,),
             pinWidget,
             const SizedBox(height: 50,),
             DoneBtn(

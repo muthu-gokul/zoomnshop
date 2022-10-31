@@ -80,4 +80,5 @@ const Color addNewTextFieldFocusBorder=Color(0xFF6B6B6B);
  Duration animeDuration=Duration(milliseconds: 300);
  Cubic animeCurve=Curves.easeIn;
 
+ const int BOTTOMSHEET_DELAY=800;
 

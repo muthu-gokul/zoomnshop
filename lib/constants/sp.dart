@@ -5,5 +5,7 @@ class Sp{
   static String insertPin="USP_InsertUserMPINDetail";
   static String insertUserDevice="USP_InsertUserDeviceDetail";
 
+  static String getEndUserAppointment="USP_GetEndUserAppointmentDetail";
+
 }
 

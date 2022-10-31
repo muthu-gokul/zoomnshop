@@ -85,6 +85,7 @@ dependencies:
   uuid: ^3.0.6
   device_info:
   connectivity:
+  local_auth: ^2.1.2
 
 dev_dependencies:
   flutter_test:

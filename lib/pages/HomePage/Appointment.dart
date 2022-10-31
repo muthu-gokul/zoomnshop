@@ -5,12 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:zoomnshop/notifier/customer/appointmentNotifier.dart';
 import 'package:zoomnshop/pages/navHomeScreen.dart';
+import 'package:zoomnshop/widgets/searchDropdown/search2.dart';
+import '../../api/apiUtils.dart';
 import '../../notifier/themeNotifier.dart';
 import '../../styles/constants.dart';
 import '../../styles/style.dart';
 import '../../utils/sizeLocal.dart';
 import '../../widgets/bottomPainter.dart';
+import '../../widgets/closeButton.dart';
 import '../../widgets/companySettingsTextField.dart';
 import '../../widgets/innerShadowTBContainer.dart';
 
@@ -25,8 +29,11 @@ class AppointmentDetails extends StatefulWidget {
 }
 
 class _AppointmentDetailsState extends State<AppointmentDetails> {
-  @override
-  late  double width,height,width2,height2;
+
+  RxList<dynamic> timeSlot=RxList<dynamic>();
+  var selectedTimeSlot=(-1).obs;
+
+  late  double width,height,width2,height2,gridWidth;
   bool openText=false;
   close(){
     Timer(animeDuration, (){
@@ -35,12 +42,68 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
       });
     });
   }
+
+  Search2 search2 = Search2(
+      dialogWidth: SizeConfig.screenWidth!,
+      dataName: '',
+      selectWidgetHeight: 50,
+    selectWidgetBoxDecoration: BoxDecoration(
+      border: Border.all(color: Colors.red),
+      color: Colors.grey.withOpacity(0.2)
+    ),
+    margin: EdgeInsets.all(0),
+    dialogMargin: EdgeInsets.fromLTRB(20,0,20,0),
+    hinttext: "Select Shop",
+    data: [],
+    onitemTap: (i){},
+    selectedValueFunc: (s){
+
+    },
+    scrollTap: (){},
+    showSearch: false,
+    isToJson: true,
+    isEnable: true,
+  );
+
+  @override
+  void initState(){
+    getCustomerAppointmentDetail();
+    getDrp();
+    super.initState();
+  }
+
+  String page="Appointments";
+  void getDrp(){
+    getMasterDrp(page,"ClientOutletId",null,null).then((value){
+      print(value);
+      search2.setDataArray(value);
+    });
+    search2.selectedValueFunc=(s){
+      print("ss $s");
+      selectedTimeSlot.value=-1;
+      getMasterDrp(page,"TimeSlotId",s['Id'],null).then((value){
+        print(value);
+        timeSlot.value=value;
+      });
+    };
+  }
+
+  void onTimeSlotClick(val){
+    print(val);
+    getMasterDrp(page,"AvailableTimeSlot",val['Id'],search2.getValue()).then((value){
+      print("AvailableTimeSlot");
+      print(value);
+    });
+  }
+
+
+
   Widget build(BuildContext context) {
     width=MediaQuery.of(context).size.width;
     height=MediaQuery.of(context).size.height;
     width2=width-16;
     height2=height-16;
-
+    gridWidth=width-30;
     SizeConfig().init(context);
     return SafeArea(
         child: Consumer<ThemeNotifier>(
@@ -73,7 +136,13 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                             SizedBox(width: 5,),
                             Text('Appointment',style: TextStyle(fontFamily: 'RR',fontSize: 24,color: Colors.black,letterSpacing: 0.1)),
                             Spacer(),
-                            GestureDetector(
+                            CloseBtn(
+                             icon: Icons.add,
+                             onTap: (){
+                               testBtmSheetSlot();
+                             },
+                            ),
+                            /*GestureDetector(
                                 onTap: () {
                                   // method to show the search bar
                                   showSearch(
@@ -83,7 +152,7 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
                                   );
                                 },
                                 child: Icon(Icons.search_sharp,color:Colors.black,size: 30,)
-                            ),
+                            ),*/
                           ],
                         ),
                       ),
@@ -186,7 +255,118 @@ class _AppointmentDetailsState extends State<AppointmentDetails> {
         )
     );
   }
-
+  List<int> TimeSlot=List.generate(4, (index) => index);
+  List<int> AvailaTime=List.generate(2, (index) => index);
+  void testBtmSheetSlot() {
+    Get.bottomSheet(
+        Container(
+            padding: EdgeInsets.only(left: 15,right: 15),
+            color: Colors.white,
+            child:Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 20,),
+                Text('Select Shop',style: TextStyle(fontFamily: 'RM',fontSize: 18,color:Color(0XFF000000)),),
+                search2,
+                SizedBox(height: 20,),
+                Text('PICK DATE',style: TextStyle(fontFamily: 'RM',fontSize: 18,color:Color(0XFF000000)),),
+                Container(
+                    height: 100,
+                    child: Image.asset('assets/images/loginpages/resetpassword.png')),
+                Text('TIME SLOT',style: TextStyle(fontFamily: 'RM',fontSize: 18,color:Color(0XFF000000)),),
+                SizedBox(height: 10,),
+                Obx(() => Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: timeSlot.asMap().map((key, value) => MapEntry(key, GestureDetector(
+                    onTap: (){
+                      selectedTimeSlot.value=key;
+                      onTimeSlotClick(value);
+                    },
+                    child: Container(
+                      width: gridWidth*0.48,
+                      child: Column(
+                        children: [
+                          Container(
+                            alignment: Alignment.center,
+                            height: 40,
+                            width: SizeConfig.screenWidth,
+                            decoration:BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Color(0xffECEBF9)
+                            ),
+                            child:Text('${value['Text']}',style: TextStyle(fontFamily: 'RM',fontSize: 16,color:Color(0XFF000000)),),
+                          )
+                        ],
+                      ),
+                    ),
+                  ))).values.toList(),
+                )),
+                SizedBox(height: 20,),
+                Text('AVAILABLE  TIME',style: TextStyle(fontFamily: 'RM',fontSize: 18,color:Color(0XFF000000)),),
+                SizedBox(height: 10,),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: AvailaTime.asMap().map((key, value) => MapEntry(key, Container(
+                    // height: 100,
+                    ///  width: width*0.48,
+                    //   margin: EdgeInsets.fromLTRB(width*0.01, 5, width*0.01, 5),
+                    width: gridWidth*0.48,
+                    //margin: EdgeInsets.fromLTRB(10, 5, width*0.01, 5),
+                    // clipBehavior: Clip.antiAlias,
+                    // decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(20),
+                    //     color: lightGrey
+                    // ),
+                    child: Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          height: 40,
+                          width: SizeConfig.screenWidth,
+                          decoration:BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Color(0xffECEBF9)
+                          ),
+                          child:Text('30 MIN',style: TextStyle(fontFamily: 'RM',fontSize: 16,color:Color(0XFF000000)),),
+                        )
+                      ],
+                    ),
+                  ))).values.toList(),
+                ),
+                SizedBox(height: 10,),
+                GestureDetector(
+                  onTap: (){
+                    Get.back();
+                  },
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: Color(0xffFE316C),
+                          shape: BoxShape.circle
+                      ),
+                      child: Icon(Icons.arrow_forward_outlined,color:Color(0xffffffff),size: 30,),
+                    ),
+                  ),
+                ),
+              ],
+            )
+        ),
+        //barrierColor: Colors.red[50],
+        isDismissible: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(35),
+        ),
+        enableDrag: false,
+        isScrollControlled: true
+    );
+  }
 }
 addRemoveBtn(Widget icon){
   return Container(

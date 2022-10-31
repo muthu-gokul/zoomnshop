@@ -97,6 +97,15 @@ Future<String> getSharedPrefString(String key) async{
 
 const String SP_USER_ID="userid";
 const String SP_PIN="pin";
+const String SP_USERTYPEID="UserTypeId";
 const String SP_TOKEN="tokennumber";
 const String SP_USEREMAIL="c1";
 const String SP_USERPASSWORD="c2";
+const String SP_ISDEVICESUPPORT="devicesupport";
+const String SP_HASFINGERPRINT="hasfingerprint";
+
+enum UserType{
+  defaultt,
+  shopKeeper,
+  customer
+}

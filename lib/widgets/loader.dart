@@ -9,29 +9,24 @@ class Loader extends StatelessWidget {
   Loader({this.value});
   @override
   Widget build(BuildContext context) {
-    return IgnorePointer(
-      ignoring:value!?false: true,
-      child: AnimatedOpacity(
-        duration: animeDuration,
-        curve: animeCurve,
-        opacity: value!?1:0,
-        // opacity: 1,
-        child: Container(
-            height: SizeConfig.screenHeight,
-            width: SizeConfig.screenWidth,
-            color:Colors.black54,
-            child: Center(
-              child: Container(
-                  height: 100,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                 // child: Image.asset("assets/images/loader.gif",filterQuality: FilterQuality.high,gaplessPlayback: true,isAntiAlias: true,)
-                  child: CircularProgressIndicator(color: ColorUtil.primaryColor,)
-              ),
-            )
-        ),
+    return Visibility(
+      visible: value??false,
+      //ignoring:value!?false: true,
+      child: Container(
+          height: SizeConfig.screenHeight,
+          width: SizeConfig.screenWidth,
+          color:Colors.black54,
+          child: Center(
+            child: Container(
+                height: 100,
+                width: 100,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                // child: Image.asset("assets/images/loader.gif",filterQuality: FilterQuality.high,gaplessPlayback: true,isAntiAlias: true,)
+                child: CircularProgressIndicator(color: ColorUtil.primaryColor,)
+            ),
+          )
       ),
     );
   }

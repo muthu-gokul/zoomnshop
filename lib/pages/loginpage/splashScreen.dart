@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:zoomnshop/notifier/configuration.dart';
 import 'package:zoomnshop/pages/loginpage/login.dart';
 import 'package:zoomnshop/utils/sizeLocal.dart';
@@ -20,6 +22,9 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
+  final LocalAuthentication auth = LocalAuthentication();
+
   navigate(){
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
      Get.off(LoginPage());
@@ -32,6 +37,9 @@ class _SplashScreenState extends State<SplashScreen> {
       print("deive Id ${getDeviceId()}");
       checkUserData();
     });
+    if(Platform.isAndroid){
+      _checkBiometrics();
+    }
     super.initState();
   }
 
@@ -70,6 +78,21 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     });
   }
+
+  Future<void> _checkBiometrics() async {
+    late bool canCheckBiometrics;
+    try {
+      canCheckBiometrics = await auth.canCheckBiometrics;
+    } on PlatformException catch (e) {
+      canCheckBiometrics = false;
+      print(e);
+    }
+    if (!mounted) {
+      return;
+    }
+    setSharedPrefBool(canCheckBiometrics, SP_HASFINGERPRINT);
+  }
+
 
   @override
   Widget build(BuildContext context) {

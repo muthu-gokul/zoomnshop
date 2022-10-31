@@ -14,9 +14,7 @@ int outletId=0;
 String outletName="";
 
 String GetBaseUrl(){
-
   return "https://scutisoft.in/zoomnshop";
-
 }
 
 getParameterEssential({bool needOutletId=false}) async{
@@ -56,7 +54,7 @@ getOutletName() async{
 Future<List> getMasterDrp(String page,String typeName, dynamic refId,  dynamic hiraricalId) async {
 
   List<ParameterModel> parameters= await getParameterEssential();
-  //parameters.add(ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.MasterdropDown}"));
+  parameters.add(ParameterModel(Key: "SpName", Type: "String", Value: "USP_GetMasterDetail"));
   parameters.add(ParameterModel(Key: "TypeName", Type: "String", Value: typeName));
   parameters.add(ParameterModel(Key: "Page", Type: "String", Value: page));
   parameters.add(ParameterModel(Key: "RefId", Type: "String", Value: refId));

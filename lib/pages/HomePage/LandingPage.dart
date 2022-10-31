@@ -512,6 +512,7 @@ class _HomePageState extends State<HomePage> {
         padding: EdgeInsets.only(left: 15,right: 15),
           color: Colors.white,
           child:Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 20,),
@@ -610,13 +611,9 @@ class _HomePageState extends State<HomePage> {
       isDismissible: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(35),
-        // side: BorderSide(
-        //     width: 5,
-        //     color: Colors.black
-        // )
       ),
       enableDrag: false,
-
+      isScrollControlled: true
     );
   }
 

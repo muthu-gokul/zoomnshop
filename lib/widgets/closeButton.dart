@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
+import '../utils/colorUtil.dart';
+
 
 class CloseBtn extends StatelessWidget {
 
@@ -20,7 +22,7 @@ class CloseBtn extends StatelessWidget {
         width: height,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Color(0xffff0022)
+          color: ColorUtil.primaryColor
         ),
         child: Center(
           child: Icon(icon,color: Colors.white,size: iconSize,),

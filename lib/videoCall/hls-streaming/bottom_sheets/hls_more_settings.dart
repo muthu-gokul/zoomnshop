@@ -14,6 +14,7 @@ import '../../../../videoCall/hls-streaming/bottom_sheets/meeting_mode_sheet.dar
 import '../../../../videoCall/data_store/meeting_store.dart';
 import 'package:provider/provider.dart';
 
+import '../../../styles/constants.dart';
 import '../../service/room_service.dart';
 
 class HLSMoreSettings extends StatefulWidget {
@@ -79,7 +80,9 @@ class _HLSMoreSettingsState extends State<HLSMoreSettings> {
                       onTap: () async {
 
                         Navigator.pop(context);
-                        showVideo.value=false;
+                        Timer(const Duration(milliseconds: BOTTOMSHEET_DELAY), () {
+                          showVideo.value=false;
+                        });
                         showModalBottomSheet(
                           isScrollControlled: true,
                           backgroundColor: themeBottomSheetColor,
@@ -114,7 +117,9 @@ class _HLSMoreSettingsState extends State<HLSMoreSettings> {
                     horizontalTitleGap: 2,
                     onTap: () async {
                       Navigator.pop(context);
-                      showVideo.value=false;
+                      Timer(const Duration(milliseconds: BOTTOMSHEET_DELAY), () {
+                        showVideo.value=false;
+                      });
                       showModalBottomSheet(
                         isScrollControlled: true,
                         backgroundColor: themeBottomSheetColor,
@@ -150,6 +155,9 @@ class _HLSMoreSettingsState extends State<HLSMoreSettings> {
                     horizontalTitleGap: 2,
                     onTap: () async {
                       Navigator.pop(context);
+                      Timer(const Duration(milliseconds: BOTTOMSHEET_DELAY-200), () {
+                        showVideo.value=false;
+                      });
                       FocusManager.instance.primaryFocus?.unfocus();
                       String name =
                           await UtilityComponents.showNameChangeDialog(
@@ -513,6 +521,9 @@ class _HLSMoreSettingsState extends State<HLSMoreSettings> {
                       horizontalTitleGap: 2,
                       onTap: () async {
                         Navigator.pop(context);
+                        Timer(const Duration(milliseconds: BOTTOMSHEET_DELAY-200), () {
+                          showVideo.value=false;
+                        });
                         UtilityComponents.onEndRoomPressed(context);
                       },
                       contentPadding: EdgeInsets.zero,

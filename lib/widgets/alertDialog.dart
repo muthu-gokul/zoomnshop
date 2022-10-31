@@ -61,17 +61,18 @@ class CustomAlert{
   void commonErrorAlert(String title,String des){
     showDialog(
         context: Get.context!,
-        builder: (ctx) => Dialog(
+        builder: (ctx) => AlertDialog(
           shape: alertRadius,
           clipBehavior: Clip.antiAlias,
-          child: Container(
-              height:280,
+          content: Container(
+             /* height:280,*/
               width:400,
               decoration:BoxDecoration(
                 color:Colors.white,
               ),
 
               child:Column(
+                  mainAxisSize: MainAxisSize.min,
                   children:[
                     SizedBox(height:10),
                     //SvgPicture.asset('assets/errors/error-icon.svg'),

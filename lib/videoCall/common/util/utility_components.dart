@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:zoomnshop/notifier/callNotifier.dart';
 import '../../../../videoCall/common/constant.dart';
 import '../../../../videoCall/common/util/app_color.dart';
 import '../../../../videoCall/common/util/utility_function.dart';
@@ -780,9 +781,11 @@ class UtilityComponents {
                         borderRadius: BorderRadius.circular(8.0),
                       ))),
                   onPressed: () => {
-                    _meetingStore.endRoom(false, "Room Ended From Flutter"),
-                    if (_meetingStore.isRoomEnded)
-                      {Navigator.popUntil(context, (route) => route.isFirst)}
+                    _meetingStore.endRoom(true, "Room Ended From Flutter"),
+                    if (_meetingStore.isRoomEnded){
+                      Navigator.popUntil(context, (route) => route.isFirst),
+
+                    }
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(

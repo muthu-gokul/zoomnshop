@@ -1,19 +1,26 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
+import 'dart:developer';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:zoomnshop/pages/HomePage/OrderSuccess.dart';
-
+import '../../api/ApiManager.dart';
+import '../../api/apiUtils.dart';
+import '../../notifier/customer/appointmentNotifier.dart';
+import '../../notifier/customer/homePageNotifier.dart';
 import '../../notifier/themeNotifier.dart';
 import '../../styles/constants.dart';
 import '../../styles/style.dart';
+import '../../utils/colorUtil.dart';
 import '../../utils/sizeLocal.dart';
-import '../../widgets/bottomPainter.dart';
+import '../../widgets/DatePicker/date_picker_widget.dart';
 import '../../widgets/companySettingsTextField.dart';
+import '../../widgets/fittedText.dart';
 import '../../widgets/innerShadowTBContainer.dart';
-import 'Cartpage.dart';
-import 'Videocall.dart';
+import '../../widgets/loader.dart';
+import '../../widgets/validationErrorText.dart';
+import '../../widgets/widgetUtils.dart';
+import '../customer/navHomeScreen.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -25,16 +32,97 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
+
+  RxList<dynamic> timeSlot=RxList<dynamic>();
+  RxList<dynamic> availableTimeSlot=RxList<dynamic>();
+  var selectedTimeSlot=(-1).obs;
+  var selectedAvailableTimeSlot=(-1).obs;
+  DateTime? appoDate;
+
   late  double width,height,width2,height2,gridWidth;
-  List<int> topSaleList=List.generate(20, (index) => index);
-  List<int> TimeSlot=List.generate(4, (index) => index);
-  List<int> AvailaTime=List.generate(2, (index) => index);
   int selectTopSale=0;
   bool isGridView=true;
   int selectAddRemove=-1;
-  
 
+  String page="Appointments";
+  void getTimeSlot(){
+    clearAppoinFrm();
+    getMasterDrp(page,"TimeSlotId",homePageController.filterShopList[homePageController.selectedShopIndex.value]['ClientId'],null).then((value){
+      timeSlot.value=value;
+    });
+  }
+
+
+  void onTimeSlotClick(val){
+    print(val);
+    selectedAvailableTimeSlot.value=-1;
+    availableTimeSlot.clear();
+    getMasterDrp(page,"AvailableTimeSlot",val['Id'],homePageController.filterShopList[homePageController.selectedShopIndex.value]['ClientId']).then((value){
+      availableTimeSlot.value=value;
+    });
+  }
+
+  void clearAppoinFrm({clearAll=false}){
+    selectedTimeSlot.value=-1;
+    selectedAvailableTimeSlot.value=-1;
+    availableTimeSlot.clear();
+    if(clearAll){
+      timeSlot.clear();
+      appoDate=DateTime.now();
+      for(int i=0;i<requiredList.length;i++){
+        requiredList[i]['hasError']=false;
+      }
+    }
+  }
+
+  RxList<dynamic> requiredList=RxList([
+    {"value":"","hasError":false,"dataName":"ClientOutletId"},
+    {"value":"","hasError":false,"dataName":"AppointmentDate"},
+    {"value":"","hasError":false,"dataName":"TimeSlotId"},
+    {"value":"","hasError":false,"dataName":"ClientTimeSlotMappingId"}]);
+  void validateFrm(){
+    for(int i=0;i<requiredList.length;i++){
+      requiredList[i]['hasError']=false;
+    }
+    requiredList[0]['value']=homePageController.filterShopList[homePageController.selectedShopIndex.value]['ClientId'];
+    /*if(search2.getValue()==null){
+      requiredList[0]['hasError']=true;
+    }
+    else{
+      requiredList[0]['value']=search2.getValue();
+    }*/
+    if(appoDate==null){
+      requiredList[1]['hasError']=true;
+    }
+    else{
+      requiredList[1]['value']=DateFormat(dbDateFormat).format(appoDate!);
+    }
+    if(selectedTimeSlot.value==-1){
+      requiredList[2]['hasError']=true;
+    }
+    else{
+      requiredList[2]['value']=timeSlot[selectedTimeSlot.value]['Id'];
+    }
+    if(selectedAvailableTimeSlot.value==-1){
+      requiredList[3]['hasError']=true;
+    }
+    else{
+      requiredList[3]['value']=availableTimeSlot[selectedAvailableTimeSlot.value]['ClientTimeSlotMappingId'];
+    }
+    if(!requiredList.any((element) => element['hasError']==true)){
+      insertCustomerAppointmentDetail(requiredList.value,fromLandingPage: true);
+    }
+  }
+
+  @override
+  void initState(){
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      homePageController.getHomePageDetail();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<int> list = [1, 2, 3, 4, 5];
     width=MediaQuery.of(context).size.width;
@@ -94,12 +182,13 @@ class _HomePageState extends State<HomePage> {
                                     // padding: EdgeInsets.only(right: 15.0),
                                     child:   Column(
                                       children: [
-                                        Text('Hello Bala',style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.black45,fontWeight: FontWeight.bold),),
-                                        Text('Jakarta ,INA',style: TextStyle(fontFamily: 'RB',fontSize: 16,color: Colors.black,fontWeight: FontWeight.bold),),
+                                        Obx(() =>  Text("Hello ${username.value}"
+                                          ,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.black45,fontWeight: FontWeight.bold),))
                                       ],
                                     )
                                 ),
-                                Container(
+                             SizedBox(width: 10,),
+                             /*   Container(
                                   // padding: EdgeInsets.only(right: 15.0),
                                   child:   Row(
                                     children: [
@@ -116,7 +205,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ],
                                   )
-                                ),
+                                ),*/
 
                               ],
                             ),
@@ -133,7 +222,7 @@ class _HomePageState extends State<HomePage> {
                                       enable: true,
                                         hintText: "Search Product", img: "assets/images/loginpages/search.png")
                                 ),
-                                GestureDetector(
+                                /*GestureDetector(
                                   onTap:(){
                                     testBtmSheet();
                                   },
@@ -152,7 +241,7 @@ class _HomePageState extends State<HomePage> {
                                         ],
                                       )
                                   ),
-                                ),
+                                ),*/
                               ],
                             ),
                           ),
@@ -160,13 +249,157 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                       InnerShadowTBContainer(
-                        height: height-205,
+                        height: height-190,
                         width: width,
                         child: ListView(
 
                           children: [
                             SizedBox(height: 10,),
+                            HPHeader(title: "Industry",),
                             Container(
+                                width: SizeConfig.screenWidth,
+                                height: 50,
+                                alignment: Alignment.centerLeft,
+                                child: Obx(() => ListView.builder(
+                                  physics: BouncingScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: homePageController.industryList.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (ctx,i){
+                                    return  GestureDetector(
+                                      onTap: (){
+                                          homePageController.selectedIndustryIndex.value=i;
+                                          homePageController.filterShop();
+                                      },
+                                      child: Obx(() => AnimatedContainer(
+                                        duration: Duration(milliseconds: 400),
+                                        curve: Curves.easeIn,
+                                        decoration:i==homePageController.selectedIndustryIndex.value? BoxDecoration(
+                                          borderRadius: BorderRadius.circular(30.0),
+                                          color:tn.primaryColor,
+                                        ):BoxDecoration(
+                                          borderRadius: BorderRadius.circular(30.0),
+                                          // border: Border.all(color: Color(0xffE2E2E2),style:BorderStyle.solid ),
+                                          color:Color(0xffDCDDE2),
+                                        ) ,
+                                        margin: EdgeInsets.only(right: 10,top: 5,bottom: 5,left: i==0?10:0),
+                                        //width: SizeConfig.screenWidth!*0.30,
+                                        padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                        height:35 ,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            // Icon(Icons.dashboard_outlined,color:i==selectTopSale? Colors.white:Color(0xff959595),),
+                                            Text('${homePageController.industryList[i]['IndustryCategoryName']}',
+                                                style: TextStyle(fontFamily: 'RR',fontSize: 14,color: i==homePageController.selectedIndustryIndex.value? Colors.white:Color(0xff959595))
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                    );
+                                  },
+                                ))
+                            ),
+                            SizedBox(height: 10,),
+
+                            HPHeader(title: "Shop",),
+                            Container(
+                                width: SizeConfig.screenWidth,
+                                height: 50,
+                                alignment: Alignment.centerLeft,
+                                child: Obx(() => ListView.builder(
+                                  physics: BouncingScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: homePageController.filterShopList.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (ctx,i){
+                                    return  GestureDetector(
+                                      onTap: (){
+                                        homePageController.selectedShopIndex.value=i;
+                                        homePageController.filterCategory();
+                                      },
+                                      child: Obx(() => AnimatedContainer(
+                                        duration: Duration(milliseconds: 400),
+                                        curve: Curves.easeIn,
+                                        decoration:i==homePageController.selectedShopIndex.value? BoxDecoration(
+                                          borderRadius: BorderRadius.circular(30.0),
+                                          color:tn.primaryColor,
+                                        ):BoxDecoration(
+                                          borderRadius: BorderRadius.circular(30.0),
+                                          // border: Border.all(color: Color(0xffE2E2E2),style:BorderStyle.solid ),
+                                          color:Color(0xffDCDDE2),
+                                        ) ,
+                                        margin: EdgeInsets.only(right: 10,top: 5,bottom: 5,left: i==0?10:0),
+                                        //width: SizeConfig.screenWidth!*0.30,
+                                        padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                        height:35 ,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            // Icon(Icons.dashboard_outlined,color:i==selectTopSale? Colors.white:Color(0xff959595),),
+                                            Text('${homePageController.filterShopList[i]['ClientName']}',
+                                                style: TextStyle(fontFamily: 'RR',fontSize: 14,color: i==homePageController.selectedShopIndex.value? Colors.white:Color(0xff959595))
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                    );
+                                  },
+                                ))
+                            ),
+                            SizedBox(height: 10,),
+
+                            HPHeader(title: "Category",),
+                            Container(
+                                width: SizeConfig.screenWidth,
+                                height: 50,
+                                alignment: Alignment.centerLeft,
+                                child: Obx(() => ListView.builder(
+                                  physics: BouncingScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: homePageController.filterCategoryList.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (ctx,i){
+                                    return  GestureDetector(
+                                      onTap: (){
+                                        homePageController.selectedCategoryIndex.value=i;
+                                        homePageController.filterProduct();
+                                      },
+                                      child: Obx(() => AnimatedContainer(
+                                        duration: Duration(milliseconds: 400),
+                                        curve: Curves.easeIn,
+                                        decoration:i==homePageController.selectedCategoryIndex.value? BoxDecoration(
+                                          borderRadius: BorderRadius.circular(30.0),
+                                          color:tn.primaryColor,
+                                        ):BoxDecoration(
+                                          borderRadius: BorderRadius.circular(30.0),
+                                          // border: Border.all(color: Color(0xffE2E2E2),style:BorderStyle.solid ),
+                                          color:Color(0xffDCDDE2),
+                                        ) ,
+                                        margin: EdgeInsets.only(right: 10,top: 5,bottom: 5,left: i==0?10:0),
+                                        //width: SizeConfig.screenWidth!*0.30,
+                                        padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                        height:35 ,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            // Icon(Icons.dashboard_outlined,color:i==selectTopSale? Colors.white:Color(0xff959595),),
+                                            Text('${homePageController.filterCategoryList[i]['ProductCategoryName']}',
+                                                style: TextStyle(fontFamily: 'RR',fontSize: 14,color: i==homePageController.selectedCategoryIndex.value? Colors.white:Color(0xff959595))
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                    );
+                                  },
+                                ))
+                            ),
+                            SizedBox(height: 10,),
+
+                            /*Container(
                               margin: EdgeInsets.only(left: 10.0,right: 10.0),
                                 color: Color(0XFFF7F7FF),
                                 child:  CarouselSlider(
@@ -217,54 +450,10 @@ class _HomePageState extends State<HomePage> {
                                   ))
                                       .toList(),
                                 )
-                            ),
-                            SizedBox(height: 10,),
+                            ),*/
+                           // SizedBox(height: 10,),
 
-                            Container(
-                                width: SizeConfig.screenWidth,
-                                height: 50,
-                                //  padding: EdgeInsets.only(bottom: 10),
-                                alignment: Alignment.centerLeft,
-                                child: ListView.builder(
-                                  physics: BouncingScrollPhysics(),
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: 5,
-                                  shrinkWrap: true,
-                                  itemBuilder: (ctx,i){
-                                    return  GestureDetector(
-                                      onTap: (){
-                                        setState(() {
-                                          selectTopSale=i;
-                                        });
-                                      },
-                                      child: AnimatedContainer(
-                                        duration: Duration(milliseconds: 400),
-                                        curve: Curves.easeIn,
-                                        decoration:i==selectTopSale? BoxDecoration(
-                                          borderRadius: BorderRadius.circular(30.0),
-                                          color:tn.primaryColor,
-                                        ):BoxDecoration(
-                                          borderRadius: BorderRadius.circular(30.0),
-                                          // border: Border.all(color: Color(0xffE2E2E2),style:BorderStyle.solid ),
-                                          color:Color(0xffDCDDE2),
-                                        ) ,
-                                        margin: EdgeInsets.only(right: 10,top: 5,bottom: 5,left: i==0?10:0),
-                                        width: SizeConfig.screenWidth!*0.30,
-                                        height:35 ,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            // Icon(Icons.dashboard_outlined,color:i==selectTopSale? Colors.white:Color(0xff959595),),
-                                            Text('Women s',style: TextStyle(fontFamily: 'RR',fontSize: 14,color: i==selectTopSale? Colors.white:Color(0xff959595))),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                )
-                            ),
-                            SizedBox(height: 10,),
+                            ///SizedBox(height: 10,),
 
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -277,13 +466,13 @@ class _HomePageState extends State<HomePage> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text('Top Sale',style: TextStyle(fontFamily:'RB',fontSize: 18,color: Color(0xff000000),fontWeight: FontWeight.bold),),
-                                      Row(
+                                     /* Row(
                                         children: [
                                           Padding(
                                             padding: const EdgeInsets.only(right: 8.0),
                                             child: GestureDetector(
                                                 onTap:(){
-                                                  testBtmSheet1();
+                                                 // testBtmSheet1();
                                                 },
                                                 child: Text('View All',style: TextStyle(fontFamily: 'RR',fontSize: 14,color:tn.primaryColor),)),
                                           ),
@@ -299,22 +488,23 @@ class _HomePageState extends State<HomePage> {
                                               child:   Icon(Icons.chevron_right,color: Color(0xffffffff),size: 15,)
                                           ),
                                         ],
-                                      ),
+                                      ),*/
                                     ],
                                   ),
                                 ),
-                                GestureDetector(
-                                  onTap:(){
-                                    testBtmSheetSlot();
-                                  },
-                                  child: Padding(
-                                    padding: EdgeInsets.only(left: 10,right: 10),
-                                    child: SingleChildScrollView(
-                                      physics: NeverScrollableScrollPhysics(),
-                                      child: Wrap(
-                                        spacing: 10,
-                                        runSpacing: 10,
-                                        children: topSaleList.asMap().map((key, value) => MapEntry(key, Container(
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10,right: 10),
+                                  child: SingleChildScrollView(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    child: Obx(() => Wrap(
+                                      spacing: 10,
+                                      runSpacing: 10,
+                                      children: homePageController.filterProductList.asMap().map((key, value) => MapEntry(key, GestureDetector(
+                                        onTap:(){
+                                         // log("${homePageController.filterProductList[key]}");
+                                          appointmentSheet();
+                                        },
+                                        child: Container(
                                           height: 300,
                                           ///  width: width*0.48,
                                           //   margin: EdgeInsets.fromLTRB(width*0.01, 5, width*0.01, 5),
@@ -328,15 +518,14 @@ class _HomePageState extends State<HomePage> {
                                           child: Column(
                                             children: [
                                               Container(
-                                                // decoration: BoxDecoration(
-                                                //   borderRadius: BorderRadius.circular(17),
-                                                //   color: Colors.white,
-                                                // ),
-                                                // clipBehavior: Clip.antiAlias,
-                                                // margin: EdgeInsets.all(15.0),
                                                 height: 255,
                                                 width: gridWidth*0.9,
-                                                child: Image.asset("assets/images/landingPage/slice-02.jpg"),
+                                                //child: Image.asset("assets/images/landingPage/slice-02.jpg"),
+                                                child: CachedNetworkImage(
+                                                  placeholder: (context, url) => Container(),
+                                                  imageUrl: GetImageBaseUrl()+homePageController.filterProductList[key]['ProductImage'],
+                                                  errorWidget:(c,a,b)=> Image.asset("assets/images/landingPage/slice-02.jpg"),
+                                                ),
                                               ),
                                               Container(
                                                 height: 40,
@@ -351,11 +540,11 @@ class _HomePageState extends State<HomePage> {
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
                                                           Container(
-                                                            child: Text('Casual V-Neck',style: TextStyle(fontFamily: 'RB',color: Colors.black,fontSize: 13),),
+                                                            child: Text('${homePageController.filterProductList[key]['ProductName']}',style: TextStyle(fontFamily: 'RB',color: Colors.black,fontSize: 13),),
                                                           ),
-                                                          Container(
+                                                          /*Container(
                                                             child: Text('129.00',style: TextStyle(fontFamily: 'RR',color: Colors.black26,fontSize: 12),),
-                                                          ),
+                                                          ),*/
                                                         ],
                                                       ),
                                                     ),
@@ -384,9 +573,9 @@ class _HomePageState extends State<HomePage> {
                                               )
                                             ],
                                           ),
-                                        ))).values.toList(),
-                                      ),
-                                    ),
+                                        ),
+                                      ))).values.toList(),
+                                    )),
                                   ),
                                 )
                               ],
@@ -400,61 +589,182 @@ class _HomePageState extends State<HomePage> {
                 ),
                // bottomNavigationBar: BottomNavi(),
               ),
-              Positioned(
+              /*Positioned(
                 bottom: -15,
                   child: BottomNavi()
-              )
+              )*/
+              Obx(() => Loader(value: showLoader.value,))
             ],
           ),
         ),
     );
   }
 
-  void testBtmSheet() {
+  void appointmentSheet() {
+    getTimeSlot();
+    clearAppoinFrm(clearAll: true);
     Get.bottomSheet(
-      Container(
-          height: SizeConfig.screenHeight!*0.9,
-          color: Colors.white,
-          child:Column(
-            children: [
-              Container(
-                  height: 250,
-                  child: Image.asset('assets/images/loginpages/call-acpt.png')),
-              Text('Video Shopping to Start in',style: TextStyle(fontFamily: 'RR',fontSize: 20,color:Colors.black26,),),
-              SizedBox(height: 10,),
-              Text('00:00 Min',style: TextStyle(fontFamily: 'RM',fontSize: 20 ,color:Color(0XFFFE316C)),),
-              SizedBox(height: 10,),
-              GestureDetector(
-                onTap: (){
-                  Get.back();
-                },
-                child: Container(
-                  height: 50,
-                  width: SizeConfig.screenWidth!*0.60,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Color(0XFFFE316C),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text("Call",style: whiteRM20,),
+        Container(
+            height: SizeConfig.screenHeight!*0.8,
+            padding: EdgeInsets.only(left: 15,right: 15),
+            color: ColorUtil.secondaryBg,
+            child:Stack(
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 20,),
+                    /*Text('Select Shop',style: TextStyle(fontFamily: 'RM',fontSize: 18,color:Color(0XFF000000)),),
+                    SizedBox(height: 5,),*/
+                    Obx(() => Visibility(
+                        visible: requiredList[0]['hasError'],
+                        child: ValidationErrorText())),
+                    SizedBox(height: 20,),
+                    Text('PICK DATE',style: TextStyle(fontFamily: 'RM',fontSize: 18,color:Color(0XFF000000)),),
+                    Container(
+                        height: 100,
+                        child: DatePicker(
+                          DateTime.now(),
+                          width: 55,
+                          height: 80,
+                          // controller: _controller,
+                          initialSelectedDate: DateTime.now(),
+                          selectionColor: Colors.transparent,
+                          selectedTextColor: ColorUtil.primaryColor,
+                          dateTextStyle: ts18(ColorUtil.black,fontfamily: 'RM'),
+                          dayTextStyle: ts15(ColorUtil.black,fontfamily: 'RR'),
+                          onDateChange: (date) {
+                            // New date selected
+                            setState(() {
+                              appoDate = date;
+                            });
+                          },
+                          needMonth: true,
+                        )
+                    ),
+                    Obx(() => Visibility(
+                        visible: requiredList[1]['hasError'],
+                        child: ValidationErrorText())),
+                    Text('TIME SLOT',style: TextStyle(fontFamily: 'RM',fontSize: 18,color:Color(0XFF000000)),),
+                    SizedBox(height: 10,),
+                    Obx(() => Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: timeSlot.asMap().map((key, value) => MapEntry(key, GestureDetector(
+                        onTap: (){
+                          selectedTimeSlot.value=key;
+                          onTimeSlotClick(value);
+                        },
+                        child: Container(
+                          width: gridWidth*0.48,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                height: 40,
+                                width: SizeConfig.screenWidth,
+                                decoration:BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color:selectedTimeSlot.value==key?ColorUtil.primaryColor: Color(0xffECEBF9)
+                                ),
+                                child: FittedText(
+                                  height: 15,
+                                  width: gridWidth*0.48,
+                                  alignment: Alignment.center,
+                                  text: '${value['Text']}',
+                                  textStyle: ts15(selectedTimeSlot.value==key?Colors.white:ColorUtil.black,fontfamily: 'RM'),
+                                ),
+                                //child:Text('${value['Text']}',style: TextStyle(fontFamily: 'RM',fontSize: 16,color:Color(0XFF000000)),),
+                              )
+                            ],
+                          ),
+                        ),
+                      ))).values.toList(),
+                    )),
+                    Obx(() => Visibility(
+                        visible: requiredList[2]['hasError'],
+                        child: ValidationErrorText())),
+                    SizedBox(height: 20,),
+                    Text('AVAILABLE  TIME',style: TextStyle(fontFamily: 'RM',fontSize: 18,color:Color(0XFF000000)),),
+                    SizedBox(height: 10,),
+                    Flexible(
+                      child: SingleChildScrollView(
+                        child:   Obx(() => Wrap(
+                          spacing: 10,
+                          runSpacing: 10,
+                          children: availableTimeSlot.asMap().map((key, value) => MapEntry(key, GestureDetector(
+                            onTap: (){
+                              selectedAvailableTimeSlot.value=key;
+                            },
+                            child: Container(
+                              width: gridWidth*0.48,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.center,
+                                    height: 40,
+                                    width: SizeConfig.screenWidth,
+                                    decoration:BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color:selectedAvailableTimeSlot.value==key?ColorUtil.primaryColor: Color(0xffECEBF9)
+                                    ),
+                                    child: FittedText(
+                                      height: 15,
+                                      width: gridWidth*0.48,
+                                      alignment: Alignment.center,
+                                      text: '${value['FromTime']} - ${value['ToTime']}',
+                                      textStyle: ts15(selectedAvailableTimeSlot.value==key?Colors.white:ColorUtil.black,fontfamily: 'RM'),
+                                    ),
+                                    //child:Text('${value['Text']}',style: TextStyle(fontFamily: 'RM',fontSize: 16,color:Color(0XFF000000)),),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ))).values.toList(),
+                        )),
+                      ),
+                    ),
+                    Obx(() => Visibility(
+                        visible: requiredList[3]['hasError'],
+                        child: ValidationErrorText())),
+                    SizedBox(height: 10,),
+                    GestureDetector(
+                      onTap: (){
+                        validateFrm();
+                      },
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: Color(0xffFE316C),
+                              shape: BoxShape.circle
+                          ),
+                          child: Icon(Icons.arrow_forward_outlined,color:Color(0xffffffff),size: 30,),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10,),
+                  ],
                 ),
-              ),
-              SizedBox(height: 10,),
-              Text('Reject',style: TextStyle(fontFamily: 'RM',fontSize: 20,color:Color(0XFFFE316C)),),
-            ],
-          )
-      ),
-      //barrierColor: Colors.red[50],
-      isDismissible: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(35),
-        // side: BorderSide(
-        //     width: 5,
-        //     color: Colors.black
-        // )
-      ),
-      enableDrag: false,
-
+                Obx(() => Container(
+                    height: SizeConfig.screenHeight!*0.8,
+                    margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                    child: Loader(value: showLoader.value,)))
+              ],
+            )
+        ),
+        //barrierColor: Colors.red[50],
+        isDismissible: true,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(35),),
+        enableDrag: false,
+        isScrollControlled: true,
+        clipBehavior: Clip.antiAlias
     );
   }
 
@@ -506,116 +816,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void testBtmSheetSlot() {
-    Get.bottomSheet(
-      Container(
-        padding: EdgeInsets.only(left: 15,right: 15),
-          color: Colors.white,
-          child:Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 20,),
-              Text('PICK DATE',style: TextStyle(fontFamily: 'RM',fontSize: 18,color:Color(0XFF000000)),),
-              Container(
-                  height: 100,
-                  child: Image.asset('assets/images/loginpages/resetpassword.png')),
-              Text('TIME SLOT',style: TextStyle(fontFamily: 'RM',fontSize: 18,color:Color(0XFF000000)),),
-              SizedBox(height: 10,),
-              Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: TimeSlot.asMap().map((key, value) => MapEntry(key, Container(
-                  // height: 100,
-                  ///  width: width*0.48,
-                  //   margin: EdgeInsets.fromLTRB(width*0.01, 5, width*0.01, 5),
-                  width: gridWidth*0.48,
-                  //margin: EdgeInsets.fromLTRB(10, 5, width*0.01, 5),
-                  // clipBehavior: Clip.antiAlias,
-                  // decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(20),
-                  //     color: lightGrey
-                  // ),
-                  child: Column(
-                    children: [
-                     Container(
-                       alignment: Alignment.center,
-                       height: 40,
-                       width: SizeConfig.screenWidth,
-                       decoration:BoxDecoration(
-                         borderRadius: BorderRadius.circular(5),
-                          color: Color(0xffECEBF9)
-                       ),
-                       child:Text('30 MIN',style: TextStyle(fontFamily: 'RM',fontSize: 16,color:Color(0XFF000000)),),
-                     )
-                    ],
-                  ),
-                ))).values.toList(),
-              ),
-              SizedBox(height: 20,),
-              Text('AVAILABLE  TIME',style: TextStyle(fontFamily: 'RM',fontSize: 18,color:Color(0XFF000000)),),
-              SizedBox(height: 10,),
-              Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: AvailaTime.asMap().map((key, value) => MapEntry(key, Container(
-                  // height: 100,
-                  ///  width: width*0.48,
-                  //   margin: EdgeInsets.fromLTRB(width*0.01, 5, width*0.01, 5),
-                  width: gridWidth*0.48,
-                  //margin: EdgeInsets.fromLTRB(10, 5, width*0.01, 5),
-                  // clipBehavior: Clip.antiAlias,
-                  // decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(20),
-                  //     color: lightGrey
-                  // ),
-                  child: Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.center,
-                        height: 40,
-                        width: SizeConfig.screenWidth,
-                        decoration:BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Color(0xffECEBF9)
-                        ),
-                        child:Text('30 MIN',style: TextStyle(fontFamily: 'RM',fontSize: 16,color:Color(0XFF000000)),),
-                      )
-                    ],
-                  ),
-                ))).values.toList(),
-              ),
-              SizedBox(height: 10,),
-              GestureDetector(
-                onTap: (){
-                  Get.back();
-                },
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: Container(
-                    height: 50,
-                    width: 50,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: Color(0xffFE316C),
-                        shape: BoxShape.circle
-                    ),
-                    child: Icon(Icons.arrow_forward_outlined,color:Color(0xffffffff),size: 30,),
-                  ),
-                ),
-              ),
-            ],
-          )
-      ),
-      //barrierColor: Colors.red[50],
-      isDismissible: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(35),
-      ),
-      enableDrag: false,
-      isScrollControlled: true
-    );
-  }
+
 
   addRemoveBtn(Widget icon){
     return Container(

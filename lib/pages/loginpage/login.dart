@@ -19,7 +19,7 @@ import '../../styles/constants.dart';
 import '../../styles/style.dart';
 import '../../utils/sizeLocal.dart';
 import '../../widgets/alertDialog.dart';
-import '../navHomeScreen.dart';
+import '../customer/navHomeScreen.dart';
 import 'EnterEmail.dart';
 
 class LoginPage extends StatefulWidget {
@@ -51,14 +51,13 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
   Color fillColor=Color(0xFFFFFFFF);
   Color borderColor=Color(0xFFE5E5E5);
   Color inputTextColor=Color(0xFF9b9b9b);
-  int _current = 0;
-  final _text = TextEditingController();
-  final _text1 = TextEditingController();
-  bool _validate = false;
+
+  var emailInValid=false.obs;
+  var passwordInValid=false.obs;
+
 
   @override
   void dispose() {
-    _text.dispose();
     super.dispose();
   }
   @override
@@ -82,7 +81,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     SizeConfig().init(context);
     node=FocusScope.of(context);
 
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: []);
+    //SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: []);
 
     offsetAnimation = Tween(begin: 0.0, end: 28.0)
         .chain(CurveTween(curve: Curves.elasticIn))
@@ -166,6 +165,8 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                                 hintStyle: TextStyle(
                                                     color:loginvalidation?Colors.red: inputTextColor.withOpacity(0.7),fontSize: 18,fontFamily: 'RR'),
                                                 contentPadding: EdgeInsets.only(left: 20,top: 10),
+                                                errorStyle: TextStyle(fontSize: 0),
+                                                errorText: ''
                                                 //   fillColor: loginvalidation?HexColor("1C1F32"):Colors.white,
 
                                               ),
@@ -176,9 +177,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                                     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
                                                 RegExp regex = new RegExp(pattern as String);
                                                 if (!regex.hasMatch(value!)) {
-                                                  return 'Email format is invalid';
+                                                  //return 'Email format is invalid';
                                                 } else {
-                                                  return null;
+                                                  //return null;
                                                 }
                                               },
                                               onEditingComplete: (){

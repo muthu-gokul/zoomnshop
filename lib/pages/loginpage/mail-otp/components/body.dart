@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:zoomnshop/pages/loginpage/login.dart';
-import 'package:zoomnshop/pages/navHomeScreen.dart';
+import 'package:zoomnshop/pages/customer/navHomeScreen.dart';
 
 
 import '../../../../styles/constants.dart';

@@ -25,7 +25,8 @@ class LeftAlignHeader extends StatelessWidget {
 class PinWidget extends StatelessWidget {
 
   int pinLength;
-  PinWidget({required this.pinLength}){
+  VoidCallback onComplete;
+  PinWidget({required this.pinLength,required this.onComplete}){
     init();
   }
 
@@ -77,6 +78,12 @@ class PinWidget extends StatelessWidget {
     });
   }
 
+  void requestFocus(){
+    if(focusNodes.length>0){
+      focusNodes[0].requestFocus();
+    }
+  }
+
   var isValid=true.obs;
   var errorText="* Required".obs;
   @override
@@ -111,6 +118,11 @@ class PinWidget extends StatelessWidget {
                     onChanged: (value) {
                       if(i==pinLength-1 && value.isNotEmpty){
                         focusNodes[i].unfocus();
+                        onComplete();
+                      }
+                      else if(value.length==pinLength){
+                        focusNodes[i].unfocus();
+                        onComplete();
                       }
                       else{
                         nextField(value,i);
@@ -153,3 +165,17 @@ class DoneBtn extends StatelessWidget {
   }
 }
 
+class HPHeader extends StatelessWidget {
+  String title;
+  HPHeader({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.only(left: 15),
+      child: Text(title,style: ts18(ColorUtil.black,fontfamily: 'RB'),),
+    );
+  }
+}

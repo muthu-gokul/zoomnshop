@@ -15,7 +15,7 @@ class Loader extends StatelessWidget {
       child: Container(
           height: SizeConfig.screenHeight,
           width: SizeConfig.screenWidth,
-          color:Colors.black54,
+          color:Colors.transparent,
           child: Center(
             child: Container(
                 height: 100,

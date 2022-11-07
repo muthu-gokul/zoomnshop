@@ -6,7 +6,7 @@ import '../../videoCall/common/util/utility_function.dart';
 import '../../videoCall/enum/meeting_flow.dart';
 import '../../videoCall/hls-streaming/util/hls_title_text.dart';
 import '../../videoCall/preview/preview_details.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+//import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRCodeScreen extends StatefulWidget {
   QRCodeScreen();
@@ -17,8 +17,8 @@ class QRCodeScreen extends StatefulWidget {
 
 class _QRCodeScreenState extends State<QRCodeScreen> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  QRViewController? controller;
-
+ // QRViewController? controller;
+/*
   @override
   void reassemble() {
     super.reassemble();
@@ -57,14 +57,15 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
         }
       }
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     Orientation orientation = MediaQuery.of(context).orientation;
-    return Scaffold(
+    return Container();
+    /*return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 40.0, left: 20, right: 20),
@@ -170,6 +171,6 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
           ),
         ),
       ),
-    );
+    );*/
   }
 }

@@ -24,10 +24,10 @@ void showPreview(bool res,name,url) async {
 
   Utilities.setRTMPUrl(url);
   MeetingFlow flow = Utilities.deriveFlow(url);
-    Utilities.saveStringData(key: "name", value: name);
-    res = await Utilities.getPermissions();
-    if (res) {
-      /*if (!skipPreview) {
+  Utilities.saveStringData(key: "name", value: name);
+  res = await Utilities.getPermissions();
+  if (res) {
+    /*if (!skipPreview) {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (_) => ListenableProvider.value(
                     value: PreviewStore(),
@@ -37,27 +37,27 @@ void showPreview(bool res,name,url) async {
                         meetingLink: widget.meetingLink),
                   )));
         } else {*/
-      bool showStats =false;
-      bool mirrorCamera = await Utilities.getBoolData(key: 'mirror-camera') ?? false;
-      HMSSDKInteractor _hmsSDKInteractor = HMSSDKInteractor();
+    bool showStats =false;
+    bool mirrorCamera = await Utilities.getBoolData(key: 'mirror-camera') ?? false;
+    HMSSDKInteractor _hmsSDKInteractor = HMSSDKInteractor();
 
-      Navigator.push(Get.context!, MaterialPageRoute(
-          builder: (_) => ListenableProvider.value(
-            value: MeetingStore(hmsSDKInteractor: _hmsSDKInteractor),
-            child: HLSScreenController(
-              isRoomMute: false,
-              isStreamingLink: flow == MeetingFlow.meeting
-                  ? false
-                  : true,
-              isAudioOn: true,
-              meetingLink: url,
-              localPeerNetworkQuality: -1,
-              user: name,
-              mirrorCamera: mirrorCamera,
-              showStats: showStats,
-            ),
-          )));
-    }
+    Navigator.push(Get.context!, MaterialPageRoute(
+        builder: (_) => ListenableProvider.value(
+          value: MeetingStore(hmsSDKInteractor: _hmsSDKInteractor),
+          child: HLSScreenController(
+            isRoomMute: false,
+            isStreamingLink: flow == MeetingFlow.meeting
+                ? false
+                : true,
+            isAudioOn: true,
+            meetingLink: url,
+            localPeerNetworkQuality: -1,
+            user: name,
+            mirrorCamera: mirrorCamera,
+            showStats: showStats,
+          ),
+        )));
+  }
 
 }
 
@@ -409,24 +409,3 @@ class _HomePageVideoCallState extends State<HomePageVideoCall> {
     );
   }
 }
-
-
-/*
-class TW extends StatefulWidget {
-  const TW({Key? key}) : super(key: key);
-
-  @override
-  State<TW> createState() => _TWState();
-}
-
-class _TWState extends State<TW> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: WebView(
-
-      ),
-    );
-  }
-}*/
-

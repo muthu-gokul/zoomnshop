@@ -314,7 +314,7 @@ class HMSSDKInteractor {
   void setTrackSettings(
       {HMSActionResultListener? hmsActionResultListener,
       required HMSTrackSetting hmsTrackSetting}) {
-    hmsSDK.setTrackSettings(hmsTrackSetting: hmsTrackSetting);
+  //  hmsSDK.setTrackSettings(hmsTrackSetting: hmsTrackSetting);
   }
 
   void destroy() {

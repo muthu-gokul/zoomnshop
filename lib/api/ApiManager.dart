@@ -49,7 +49,8 @@ class ApiManager{
 
   Future<List> GetInvokeLogin(List<ParameterModel> parameterList) async {
     try{
-      print(json.encode(parameterList));
+      showLoader.value=true;
+      //print(json.encode(parameterList));
       //var url="https://scutisoft.in/QMS_UAT_Test/api/Login/InvokeSignIn";
       //var url=GetBaseUrl()+"/api/Login/InvokeSignIn";
       var url=GetBaseUrl()+"/api/Mobile/GetInvoke";
@@ -72,6 +73,7 @@ class ApiManager{
       }
     }
     catch(e){
+      showLoader.value=false;
       print("ee $e");
       CustomAlert().commonErrorAlert("Server Error", "$e");
       return [false,"Catch Api"];

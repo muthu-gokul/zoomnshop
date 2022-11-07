@@ -97,11 +97,22 @@ Widget gridHeroView(
         return ChangeNotifierProvider.value(
             key: ValueKey(peerTracks[index].uid),
             value: peerTracks[index],
-            child: VideoTile(
+            child: Container(
+             /* height: 300,
+              width: 200,
+              color: Colors.red,*/
+              child: VideoTile(
+                key: ValueKey(peerTracks[index].uid),
+                itemHeight: size.height,
+                itemWidth: size.width,
+              ),
+            ),
+            /*child: VideoTile(
               key: ValueKey(peerTracks[index].uid),
               itemHeight: size.height,
               itemWidth: size.width,
-            ));
+            )*/
+        );
       },
       controller: Provider.of<MeetingStore>(context).controller,
       gridDelegate: SliverStairedGridDelegate(

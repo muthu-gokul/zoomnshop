@@ -16,6 +16,9 @@ String outletName="";
 String GetBaseUrl(){
   return "https://scutisoft.in/zoomnshop";
 }
+String GetImageBaseUrl(){
+  return "https://scutisoft.in/zoomnshop/AppAttachments/";
+}
 
 getParameterEssential({bool needOutletId=false}) async{
   return [
@@ -65,7 +68,7 @@ Future<List> getMasterDrp(String page,String typeName, dynamic refId,  dynamic h
     await ApiManager().GetInvoke(parameters).then((value) {
       if(value[0]){
         var parsed=jsonDecode(value[1]);
-        print(parsed);
+        //print(parsed);
         var table=parsed['Table'] as List;
         if(table.isNotEmpty){
           result=table;

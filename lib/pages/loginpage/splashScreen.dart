@@ -6,14 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:zoomnshop/api/apiUtils.dart';
 import 'package:zoomnshop/notifier/configuration.dart';
+import 'package:zoomnshop/notifier/utils.dart';
 import 'package:zoomnshop/pages/loginpage/login.dart';
+import 'package:zoomnshop/styles/constants.dart';
 import 'package:zoomnshop/utils/sizeLocal.dart';
 
 import '../../api/ApiManager.dart';
 import '../../constants/sp.dart';
 import '../../model/parameterMode.dart';
-import 'pinScreenLogin.dart';
+import '../customer/customerLogin.dart';
+import '../customer/pinScreenLogin.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -27,7 +31,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
   navigate(){
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-     Get.off(LoginPage());
+      if(APPTYPE==2 || APPTYPE==1){
+        Get.off(CutomerLogin());
+      }
+      else{
+        Get.off(LoginPage());
+      }
+
     });
   }
 
@@ -45,7 +55,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void checkUserData() async{
     String userId=await getSharedPrefString( SP_USER_ID);
-    print("userid $userId");
     if(userId.isEmpty){
       navigate();
     }
@@ -59,6 +68,8 @@ class _SplashScreenState extends State<SplashScreen> {
     params.add(ParameterModel(Key: "SpName", Type: "String", Value: Sp.getDeviceStatus));
     params.add(ParameterModel(Key: "LoginUserId", Type: "String", Value: userId));
     params.add(ParameterModel(Key: "DeviceId", Type: "String", Value: getDeviceId()));
+    params.add(ParameterModel(Key: "database", Type: "String", Value: getDatabase()));
+    print(jsonEncode(params));
     ApiManager().GetInvoke(params).then((response){
       if(response[0]){
         try{
@@ -93,13 +104,15 @@ class _SplashScreenState extends State<SplashScreen> {
     setSharedPrefBool(canCheckBiometrics, SP_HASFINGERPRINT);
   }
 
-
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [SystemUiOverlay.top]);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     //navigate();
     //return Container();
+    topPadding=MediaQuery.of(context).padding.top;
     SizeConfig().init(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(

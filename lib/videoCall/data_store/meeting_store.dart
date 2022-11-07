@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../notifier/callNotifier.dart';
 import '../common/constant.dart';
 import '../common/util/utility_function.dart';
 import '../enum/meeting_mode.dart';
@@ -214,6 +215,7 @@ class MeetingStore extends ChangeNotifier
 
   void endRoom(bool lock, String? reason) {
     _hmsSDKInteractor.endRoom(lock, reason == null ? "" : reason, this);
+    updateCallStatus(7);
     _hmsSDKInteractor.destroy();
   }
 
@@ -1347,9 +1349,9 @@ class MeetingStore extends ChangeNotifier
         isAudioShareStarted = false;
         notifyListeners();
         break;
-      case HMSActionResultListenerMethod.setTrackSettings:
+      //case HMSActionResultListenerMethod.setTrackSettings:
         // TODO: Handle this case.
-        break;
+       // break;
     }
   }
 
@@ -1417,9 +1419,9 @@ class MeetingStore extends ChangeNotifier
         break;
       case HMSActionResultListenerMethod.stopAudioShare:
         break;
-      case HMSActionResultListenerMethod.setTrackSettings:
+     // case HMSActionResultListenerMethod.setTrackSettings:
         // TODO: Handle this case.
-        break;
+      //  break;
     }
     notifyListeners();
   }

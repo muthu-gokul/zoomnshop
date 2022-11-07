@@ -82,7 +82,7 @@ class CustomAlert{
                         style:TextStyle(fontFamily:'RM',fontSize:22,color:ColorUtil.red),textAlign: TextAlign.center,
                     ),
                     SizedBox(height:10),
-                    Expanded(
+                    Flexible(
                       child: SingleChildScrollView(
                         child: Text(des,
                           style:TextStyle(fontFamily:'RL',fontSize:16,color:Color(0xFF787878)),textAlign: TextAlign.center,
@@ -94,7 +94,6 @@ class CustomAlert{
               )
           ),
         )
-
     );
   }
 
@@ -548,7 +547,6 @@ class CustomAlert{
               )
           ),
         )
-
     );
   }
 

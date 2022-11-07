@@ -75,18 +75,21 @@ dependencies:
   avatar_glow:
   google_fonts:
   fluttertoast:
-  qr_code_scanner:
   uni_links:
   file_picker:
   draggable_widget:
   badges:
-  hmssdk_flutter:
   dart_jsonwebtoken:
   uuid: ^3.0.6
   device_info:
   connectivity:
   local_auth: ^2.1.2
+  cached_network_image:
+  hmssdk_flutter:
+    path: 100ms-flutter-main
 
+#  hmssdk_flutter:
+#    path: 100ms-flutter-main
 dev_dependencies:
   flutter_test:
     sdk: flutter

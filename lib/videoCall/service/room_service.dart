@@ -3,6 +3,7 @@ import 'dart:convert';
 
 //Package imports
 import 'package:get/get.dart';
+import 'package:zoomnshop/notifier/callNotifier.dart';
 
 import '../common/constant.dart';
 import 'package:http/http.dart' as http;
@@ -35,15 +36,16 @@ class RoomService {
         ? Uri.parse(Constant.prodTokenEndpoint)
         : Uri.parse(Constant.qaTokenEndPoint);
     try {
+      //var tempBody={'user_id': '634400644208780bf665757a', 'role': Constant.defaultRole,'room_id':'63454ef79faa9c00f965a90e',};
 
      // var tempBody={'code': codeAndDomain[1], 'user_id': user};
-      var tempBody={'user_id': '634400644208780bf665757a', 'role': Constant.defaultRole,'room_id':'63454ef79faa9c00f965a90e',};
+
       //var tempBody={'user_id': '634400644208780bf665757a', 'role': Constant.defaultRole,'room_id':'63454ef79faa9c00f965a90e',};
       //https://prod-in2.100ms.live/hmsapi/get-token
 
      // http.Response response = await http.post(Uri.parse("https://prod-in2.100ms.live/hmsapi/zoomnshop.app.100ms.live/api/token"), body: {
       //'user_id': '634400644208780bf665757a', 'role': Constant.defaultRole,'room_id':'63454ef79faa9c00f965a90e'
-      http.Response response = await http.post(Uri.parse("https://prod-in2.100ms.live/hmsapi/zoomnshop.app.100ms.live/api/token"), body: tempBody,
+      http.Response response = await http.post(Uri.parse("https://prod-in2.100ms.live/hmsapi/zoomnshop.app.100ms.live/api/token"), body: videoCallBody,
           headers: {
         'subdomain': (codeAndDomain[0] ?? "").trim(),
         //'Content-Type': 'application/json'

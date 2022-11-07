@@ -81,12 +81,12 @@ class _VideoViewState extends State<VideoView> {
                         visible: showVideo.value,
                         child: HMSVideoView(
                           key: Key(data.item1!.trackId),
-                          scaleType: ScaleType.SCALE_ASPECT_FILL,
+                          scaleType: ScaleType.SCALE_ASPECT_BALANCED,
                           track: data.item1!,
                           setMirror: data.item1.runtimeType == HMSLocalVideoTrack
                               ? context.read<MeetingStore>().isMirror
                               : false,
-                          matchParent: false,
+                          matchParent: true,
                         ),
                       )),
                     ),

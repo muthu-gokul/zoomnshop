@@ -32,12 +32,14 @@ class Search2 extends StatelessWidget {
   String dataName;
   bool hasInput;
   bool required;
+  Mode mode;
+  double maxHeight;
 
   Search2({ this.width,this.selectedValueFunc,
     this.data, this.onitemTap, this.isToJson,this.propertyName="Text",this.propertyId="Id", this.hinttext,
     this.isEnable=true, this.scrollTap,this.margin,this.dialogMargin,this.selectWidgetHeight=70.0,
     this.selectWidgetBoxDecoration,this.showSearch=true,this.selectedValue=const {},required this.dialogWidth,
-    required this.dataName,this.hasInput=true,this.required=false,}){
+    required this.dataName,this.hasInput=true,this.required=false,this.mode=Mode.MENU,this.maxHeight=400.0}){
     if(this.selectedValue.isNotEmpty){
       selectedData.value=selectedValue;
     }
@@ -61,7 +63,7 @@ class Search2 extends StatelessWidget {
 
         popupBackgroundColor: Colors.white,
         dropdownSearchDecoration: InputDecoration(),
-        mode: Mode.MENU,
+        mode: mode,
         showSelectedItems: false,
         popupElevation: 2,
         showClearButton: false,
@@ -119,14 +121,14 @@ class Search2 extends StatelessWidget {
                   ]
               ),
               constraints: BoxConstraints(
-                  maxHeight: 400
+                  maxHeight: maxHeight
               ),
               child: Column(
                 children: [
                   !showSearch?Container():Container(
-                    height: 70,
+                    height: 50,
                     width: width,
-                    margin: EdgeInsets.all(15),
+                    margin: EdgeInsets.fromLTRB(15,15,15,0),
                     alignment: Alignment.centerLeft,
                     child: TextFormField(
                       //    style: textFormTs1,
@@ -174,7 +176,7 @@ class Search2 extends StatelessWidget {
                             color:(isToJson!?"${dataNotifier[index][propertyId].toString()}":"${dataNotifier[index].toString()}" )== (isToJson!?selectedData[propertyId].toString():selectedData['value'])?AppTheme.restroTheme:Colors.white,
                           ),
                           child:  Text(isToJson!?"${dataNotifier[index][propertyName]}":"${dataNotifier[index]}",
-                            style: TextStyle(fontFamily: 'RR',fontSize: 20,color:(isToJson!?"${dataNotifier[index][propertyId].toString()}":"${dataNotifier[index].toString()}" )== (isToJson!?selectedData[propertyId].toString():selectedData['value'].toString())?Colors.white: Colors.grey
+                            style: TextStyle(fontFamily: 'RR',fontSize: 15,color:(isToJson!?"${dataNotifier[index][propertyId].toString()}":"${dataNotifier[index].toString()}" )== (isToJson!?selectedData[propertyId].toString():selectedData['value'].toString())?Colors.white: Colors.grey
                               // color:selectedValue==data![index]?Colors.white: Color(0xFF555555),letterSpacing: 0.1
                             ),
                           ),

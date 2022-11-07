@@ -94,6 +94,17 @@ Future<String> getSharedPrefString(String key) async{
   return sp.getString(key)??"";
 }
 
+void setSharedPrefList(key, value) async{
+  SharedPreferences sp=await SharedPreferences.getInstance();
+  sp.setString(key, json.encode(value));
+}
+
+getSharedPrefList(key) async{
+  SharedPreferences sp=await SharedPreferences.getInstance();
+  return json.decode(sp.getString(key)??"");
+}
+
+
 
 const String SP_USER_ID="userid";
 const String SP_PIN="pin";
@@ -103,6 +114,10 @@ const String SP_USEREMAIL="c1";
 const String SP_USERPASSWORD="c2";
 const String SP_ISDEVICESUPPORT="devicesupport";
 const String SP_HASFINGERPRINT="hasfingerprint";
+const String SP_ALLOWFINGERPRINT="allowfingerprint";
+const String SP_USERNAME="username";
+const String SP_COMPANYID="companyid";
+const String SP_CURRENTCALLAPPOINTMENTID="appointmentid";
 
 enum UserType{
   defaultt,

@@ -4,6 +4,8 @@ import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
+import 'package:zoomnshop/api/ApiManager.dart';
+import 'package:zoomnshop/widgets/alertDialog.dart';
 
 void hs256() {
   String token;
@@ -88,18 +90,28 @@ bool verifyJWT(token){
   }
 }
 
-createRoomFromApi(name) async{
-  SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-  String mToken=await sharedPreferences.getString("managementToken")??"";
-  print(mToken);
-  http.Response response = await http.post(Uri.parse("https://api.100ms.live/v2/rooms"), body: json.encode({
-    'name': name
-  }), headers: {
-    'Authorization': 'Bearer $mToken',
-    'Content-Type': 'application/json'
-  });
-  print("createRoomFromApi ${response.body}");
-  if(response.statusCode==200){
-    var body = json.decode(response.body);
+Future<dynamic> createRoomFromApi(name) async{
+  try{
+    showLoader.value=true;
+    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    String mToken=await sharedPreferences.getString("managementToken")??"";
+    //print(mToken);
+    http.Response response = await http.post(Uri.parse("https://api.100ms.live/v2/rooms"), body: json.encode({
+      'name': name
+    }), headers: {
+      'Authorization': 'Bearer $mToken',
+      'Content-Type': 'application/json'
+    });
+    showLoader.value=false;
+    if(response.statusCode==200){
+      var body = json.decode(response.body);
+      return body;
+    }
+    else{
+      return null;
+    }
+  }catch(e,t){
+
+    CustomAlert().commonErrorAlert("$e", "$t");
   }
 }

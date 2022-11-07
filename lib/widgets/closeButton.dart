@@ -11,7 +11,9 @@ class CloseBtn extends StatelessWidget {
   double height;
   IconData icon;
   double iconSize;
-  CloseBtn({this.onTap,this.height=40,this.icon=Icons.clear,this.iconSize=25});
+  Color? bgClr;
+  BoxDecoration? boxDecoration;
+  CloseBtn({this.onTap,this.height=40,this.icon=Icons.clear,this.iconSize=25,this.bgClr,this.boxDecoration});
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +22,9 @@ class CloseBtn extends StatelessWidget {
       child: Container(
         height: height,
         width: height,
-        decoration: BoxDecoration(
+        decoration: boxDecoration?? BoxDecoration(
           shape: BoxShape.circle,
-          color: ColorUtil.primaryColor
+          color: bgClr??ColorUtil.primaryColor
         ),
         child: Center(
           child: Icon(icon,color: Colors.white,size: iconSize,),
@@ -111,3 +113,14 @@ class ArrowLeft extends StatelessWidget {
   }
 }
 
+class RefreshBtn extends StatelessWidget {
+  VoidCallback ontap;
+  RefreshBtn({required this.ontap});
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        onPressed:ontap,
+        icon: Icon(Icons.refresh,color: ColorUtil.grey1,size: 27,)
+    );
+  }
+}

@@ -148,13 +148,13 @@ void showProductAddPopUp(){
                           }
                         },
                       ),
-                      FittedText(
+                      Obx(() => FittedText(
                         width: 80,
                         height: 30,
                         alignment: Alignment.center,
                         textStyle: ts18(ColorUtil.black,fontfamily: 'RM',fontsize: 30),
-                        text: '${skCartController.quantity}',
-                      ),
+                        text: '${skCartController.quantity.value}',
+                      )),
                       CloseBtn(
                         height: 50,
                         bgClr: Colors.green,

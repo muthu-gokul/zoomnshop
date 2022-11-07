@@ -15,6 +15,7 @@ import '../settings/settingsHomePage.dart';
 import 'customerCartAppointment.dart';
 import 'customerLogin.dart';
 var username="".obs;
+int menuSel=1;
 class CustomerHomeScreen extends StatefulWidget {
   const CustomerHomeScreen({Key? key}) : super(key: key);
   @override
@@ -35,7 +36,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   }
 
   GlobalKey <ScaffoldState> scaffoldkey=new GlobalKey<ScaffoldState>();
-  int menuSel=1;
+
   late  double width,height,width2;
   @override
   Widget build(BuildContext context) {
@@ -198,6 +199,11 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
           body:menuSel==1?HomePage(
             voidCallback:(){
               scaffoldkey.currentState!.openDrawer();
+            },
+            changePage: (){
+              setState((){
+                menuSel=2;
+              });
             },
           ) :menuSel==2?AppointmentDetails (
             voidCallback:(){

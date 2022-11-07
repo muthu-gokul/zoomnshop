@@ -85,6 +85,7 @@ dependencies:
   connectivity:
   local_auth: ^2.1.2
   cached_network_image:
+  zego_uikit_prebuilt_call:
   hmssdk_flutter:
     path: 100ms-flutter-main
 

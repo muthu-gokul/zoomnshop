@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -320,43 +321,45 @@ class _AppointmentDetailsState extends State<AppointmentDetails> with TickerProv
                                       ),
                                       SizedBox(width: 5,),
                                       Container(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment:MainAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text('#${upcomingCustomerApplist[i]['AppointmentNumber']}',
-                                              style: TextStyle(fontFamily: 'RB',fontSize: 14,color: Colors.black,letterSpacing: 0.1),),
-                                            Flexible(child: Text('${upcomingCustomerApplist[i]['ClientOutletName']}',
-                                              style: TextStyle(fontFamily: 'RB',fontSize: 14,color: Colors.black,letterSpacing: 0.1),)),
-                                            SizedBox(height: 5,),
-                                            Flexible(child: Text('${upcomingCustomerApplist[i]['ClientOutletAddress']??"Address: "}',style: ColorUtil.primaryText,),),
-                                            SizedBox(height: 5,),
-                                            Flexible(child: Text('${upcomingCustomerApplist[i]['TimingFixed']}',style: ColorUtil.primaryText,),),
-                                          ],
+                                        child: Flexible(
+                                          flex: 5,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment:MainAxisAlignment.center,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text('#${upcomingCustomerApplist[i]['AppointmentNumber']}',
+                                                style: TextStyle(fontFamily: 'RB',fontSize: 14,color: Colors.black,letterSpacing: 0.1),),
+                                              Flexible(child: Text('${upcomingCustomerApplist[i]['ClientOutletName']}',
+                                                style: TextStyle(fontFamily: 'RB',fontSize: 14,color: Colors.black,letterSpacing: 0.1),)),
+                                              SizedBox(height: 5,),
+                                              Flexible(child: Text('${upcomingCustomerApplist[i]['ClientOutletAddress']??"Address: "}',style: ColorUtil.primaryText,),),
+                                              SizedBox(height: 5,),
+                                              Flexible(child: Text('${upcomingCustomerApplist[i]['TimingFixed']}',style: ColorUtil.primaryText,),),
+                                            ],
+                                          ),
                                         ),
                                       ),
+                                      Spacer(),
                                       Visibility(
                                         visible: upcomingCustomerApplist[i]['AppointmentStatusId']!=1,
-                                        child: Expanded(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            child:  Text('${upcomingCustomerApplist[i]['AppointmentStatusName']}',
-                                              style: TextStyle(fontFamily: 'RM',fontSize: 14,color:tn.primaryColor,letterSpacing: 0.1),
-                                            ),
+                                        child: Container(
+                                         // width: 150,
+                                          alignment: Alignment.centerRight,
+                                          child:  Text('${upcomingCustomerApplist[i]['AppointmentStatusName']}',
+                                            style: TextStyle(fontFamily: 'RM',fontSize: 14,color:tn.primaryColor,letterSpacing: 0.1),
                                           ),
                                         )
                                       ),
                                       Visibility(
                                         visible: upcomingCustomerApplist[i]['AppointmentStatusId']==1,
-                                        child: Expanded(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            child: CallBtn(
-                                              ontap: ()async{
-                                                initiateCall(upcomingCustomerApplist[i]['CallUserId'],upcomingCustomerApplist[i]['RoomUniqueId'],await getSharedPrefString(SP_USERNAME),upcomingCustomerApplist[i]['RoomName']);
-                                              },
-                                            ),
+                                        child: Container(
+                                          alignment: Alignment.centerRight,
+                                          child: CallBtn(
+                                            ontap: ()async{
+                                              //log("${upcomingCustomerApplist[i]}");
+                                             initiateCall(upcomingCustomerApplist[i]['CallUserId'],upcomingCustomerApplist[i]['RoomUniqueId'],await getSharedPrefString(SP_USERNAME),upcomingCustomerApplist[i]['RoomName']);
+                                            },
                                           ),
                                         ),
                                       )

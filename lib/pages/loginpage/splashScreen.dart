@@ -63,7 +63,9 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
-  void getDeviceStatus(userId){
+  void getDeviceStatus(userId) async{
+    String pin=await getSharedPrefString(SP_PIN);
+    //log("pin $pin");
     List<ParameterModel> params=[];
     params.add(ParameterModel(Key: "SpName", Type: "String", Value: Sp.getDeviceStatus));
     params.add(ParameterModel(Key: "LoginUserId", Type: "String", Value: userId));
@@ -77,8 +79,13 @@ class _SplashScreenState extends State<SplashScreen> {
           log("$parsed");
           var t=parsed['Table'];
           if(t[0]['IsRegistered']){
-            setSharedPrefString(t[0]['TokenNumber'], SP_TOKEN);
-            Get.off(PinScreenLogin());
+            if(pin.isNotEmpty){
+              setSharedPrefString(t[0]['TokenNumber'], SP_TOKEN);
+              Get.off(PinScreenLogin());
+            }
+            else{
+              navigate();
+            }
           }
           else{
             navigate();

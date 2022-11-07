@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -219,7 +221,12 @@ class _ShopKeeperAppointmentDetailState extends State<ShopKeeperAppointmentDetai
                                               child: Column(
                                                 children: [
                                                   AcceptRejectBtn(title: "Accept", ontap: (){
-                                                    createRoomFromApi(upcomingSKAppoList[i]['RoomName']).then((value){
+                                                    acceptRejectParms[0].Value=upcomingSKAppoList[i]['AppointmentId'];
+                                                    acceptRejectParms[1].Value=true;
+                                                    acceptRejectParms[2].Value=upcomingSKAppoList[i]['AppointmentId'];
+                                                    acceptRejectParms[3].Value=upcomingSKAppoList[i]['AppointmentId'];
+                                                    acceptAppointment();
+                                                   /* createRoomFromApi(upcomingSKAppoList[i]['RoomName']).then((value){
                                                       print(value);
                                                       if(value!=null){
                                                         acceptRejectParms[0].Value=upcomingSKAppoList[i]['AppointmentId'];
@@ -231,10 +238,16 @@ class _ShopKeeperAppointmentDetailState extends State<ShopKeeperAppointmentDetai
                                                       else{
                                                         CustomAlert().commonErrorAlert("Error On Creating Room...", "");
                                                       }
-                                                    });
+                                                    });*/
                                                   }),
                                                   SizedBox(height: 10,),
-                                                  AcceptRejectBtn(title: "Reject", ontap: (){}),
+                                                  AcceptRejectBtn(title: "Reject", ontap: (){
+                                                    acceptRejectParms[0].Value=upcomingSKAppoList[i]['AppointmentId'];
+                                                    acceptRejectParms[1].Value=false;
+                                                    acceptRejectParms[2].Value=upcomingSKAppoList[i]['AppointmentId'];
+                                                    acceptRejectParms[3].Value=upcomingSKAppoList[i]['AppointmentId'];
+                                                    acceptAppointment();
+                                                  }),
                                                 ],
                                               ),
                                             ),

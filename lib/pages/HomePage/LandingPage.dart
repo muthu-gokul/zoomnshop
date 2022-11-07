@@ -25,7 +25,8 @@ import '../customer/navHomeScreen.dart';
 
 class HomePage extends StatefulWidget {
   VoidCallback voidCallback;
-  HomePage({required this.voidCallback});
+  VoidCallback changePage;
+  HomePage({required this.voidCallback,required this.changePage});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -188,14 +189,15 @@ class _HomePageState extends State<HomePage> {
                                     )
                                 ),
                              SizedBox(width: 10,),
-                             /*   Container(
+                                Container(
                                   // padding: EdgeInsets.only(right: 15.0),
                                   child:   Row(
                                     children: [
-                                      Text('call',style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.black,fontWeight: FontWeight.bold),),
+                                     // Text('call',style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.black,fontWeight: FontWeight.bold),),
                                       GestureDetector(
                                           onTap:(){
-                                            showPreview(true,"Muthu",'https://zoomnshop.app.100ms.live/meeting/Classroom');
+                                            widget.changePage();
+                                            //showPreview(true,"Muthu",'https://zoomnshop.app.100ms.live/meeting/Classroom');
                                           //  Navigator.push(context, MaterialPageRoute(builder: (ctx)=>HomePageVideoCall()));
                                           },
                                         child: Container(
@@ -205,7 +207,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ],
                                   )
-                                ),*/
+                                ),
 
                               ],
                             ),

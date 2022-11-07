@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 class Sample extends StatefulWidget {
   const Sample({Key? key}) : super(key: key);
@@ -219,4 +220,90 @@ enum _SupportState {
   unknown,
   supported,
   unsupported,
+}
+
+
+class GroupCallPage extends StatelessWidget {
+  /// Users who use the same callID can in the same call.
+  final callIDTextCtrl = TextEditingController(text: "group_call_id");
+  final userID = TextEditingController(text: "");
+  final name = TextEditingController(text: "");
+
+  GroupCallPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Flexible(
+                child: TextFormField(
+                  controller: callIDTextCtrl,
+                  decoration: const InputDecoration(
+                      labelText: "join a group call by id"),
+                ),
+              ),
+              Flexible(
+                child: TextFormField(
+                  controller: userID,
+                  decoration: const InputDecoration(
+                      labelText: "userid"),
+                ),
+              ),
+              Flexible(
+                child: TextFormField(
+                  controller: name,
+                  decoration: const InputDecoration(
+                      labelText: "name"),
+                ),
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return CallPage(callID: callIDTextCtrl.text,userId: userID.text,name: name.text,);
+                      }),
+                    );
+                  },
+                  child: const Text("join"))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CallPage extends StatelessWidget {
+  final String callID;
+  final String userId;
+  final String name;
+
+  const CallPage({
+    Key? key,
+    required this.callID,
+    required this.userId,
+    required this.name,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: ZegoUIKitPrebuiltCall(
+        appID: 209573504,
+        appSign: "3a25540ded230675167c3f4d7bfb104d7c9f0fd50eec918c5aaf23c220ec4d9b",
+        userID: userId,
+        userName: name,
+        callID: callID,
+        config: ZegoUIKitPrebuiltCallConfig.groupVideoCall(),
+      ),
+    );
+  }
 }

@@ -16,6 +16,7 @@ import '../customer/navHomeScreen.dart';
 import '../myOrder/myOrderDetails.dart';
 import '../settings/settingsHomePage.dart';
 import 'shopKeeperCartAppointment.dart';
+import 'shopKeeperProductMaster.dart';
 
 class ShopKeeperHomeScreen extends StatefulWidget {
   const ShopKeeperHomeScreen({Key? key}) : super(key: key);
@@ -137,15 +138,16 @@ class _ShopKeeperHomeScreenState extends State<ShopKeeperHomeScreen> {
                     scaffoldkey.currentState!.openEndDrawer();
                   },
                 ),
-              /*  DrawerContent(
-                  title: 'Cart',
+            /*    DrawerContent(
+                  title: 'Product Detail',
                   ontap: (){
                     setState(() {
-                      menuSel=2;
+                      menuSel=3;
                     });
                     scaffoldkey.currentState!.openEndDrawer();
                   },
-                ),
+                ),*/
+              /*
 */
             /*    DrawerContent(
                   title: 'Orders History',
@@ -181,6 +183,8 @@ class _ShopKeeperHomeScreenState extends State<ShopKeeperHomeScreen> {
           body: menuSel==1?ShopKeeperAppointmentDetail(voidCallback: (){
             scaffoldkey.currentState!.openDrawer();
           }):menuSel==2?SkCartAppointment(voidCallback: (){
+            scaffoldkey.currentState!.openDrawer();
+          }):menuSel==3?ProductMaster(voidCallback: (){
             scaffoldkey.currentState!.openDrawer();
           })
               :Container(),

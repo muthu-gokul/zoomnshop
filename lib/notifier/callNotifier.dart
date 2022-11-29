@@ -23,6 +23,9 @@ initiateCall(userId, roomId, name, roomName) async{
     'room_id':roomId,};
   showPreview(true,name,'https://zoomnshop.app.100ms.live/meeting/'+roomName);
 }
+initiateCallFromNoti(Map data) async{
+  Get.to(VideoCallPage(name: data['name'],userId: data['userId'],callID: data['callId'],));
+}
 
 void updateCallStatus(appointmentStatusId) async{
   String aid=await getSharedPrefString(SP_CURRENTCALLAPPOINTMENTID);

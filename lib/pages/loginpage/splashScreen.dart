@@ -2,20 +2,27 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zoomnshop/api/apiUtils.dart';
 import 'package:zoomnshop/notifier/configuration.dart';
 import 'package:zoomnshop/notifier/utils.dart';
 import 'package:zoomnshop/pages/loginpage/login.dart';
 import 'package:zoomnshop/styles/constants.dart';
 import 'package:zoomnshop/utils/sizeLocal.dart';
+import 'package:zoomnshop/widgets/alertDialog.dart';
 
 import '../../api/ApiManager.dart';
 import '../../constants/sp.dart';
 import '../../model/parameterMode.dart';
+import '../../notifier/callNotifier.dart';
+import '../../notifier/notification/myNotification.dart';
 import '../customer/customerLogin.dart';
 import '../customer/pinScreenLogin.dart';
 class SplashScreen extends StatefulWidget {
@@ -25,10 +32,10 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen> implements MyNotificationCallBack{
 
   final LocalAuthentication auth = LocalAuthentication();
-
+  late MyNotification myNotification;
   navigate(){
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if(APPTYPE==2 || APPTYPE==1){
@@ -43,9 +50,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState(){
+    myNotification=MyNotification();
+    myNotification.setMyCallBack(this);
+    myNotification.registerNotification();
+    myNotification.checkForInitialMessage();
     initPlatformState().then((value){
       print("deive Id ${getDeviceId()}");
       checkUserData();
+      getFirebaseToken();
     });
     if(Platform.isAndroid){
       _checkBiometrics();
@@ -109,6 +121,44 @@ class _SplashScreenState extends State<SplashScreen> {
       return;
     }
     setSharedPrefBool(canCheckBiometrics, SP_HASFINGERPRINT);
+  }
+
+  void getFirebaseToken() async{
+    String ft=await getSharedPrefString(SP_FIREBASETOKEN);
+    FirebaseMessaging.instance.getToken().then((value){
+      log("FT $value");
+      if(ft!=value){
+
+        FirebaseDatabase.instance.ref().child("tokens/${getDeviceId().toString().replaceAll(".", "")}").set({"token":value,"LastUpdated":DateTime.now().toString()});
+        setSharedPrefString(value, SP_FIREBASETOKEN);
+      }
+
+    });
+
+  }
+
+  @override
+  void onNotificationReceived(dynamic valueArray, NotificationMode type) {
+    if(type==NotificationMode.onMessage){
+      checkNotiPurpose(valueArray);
+    }
+    else if(type==NotificationMode.onMessageClickOpen){
+      checkNotiPurpose(valueArray);
+    }
+    else if(type==NotificationMode.initialMessage){
+      checkNotiPurpose(valueArray);
+    }
+    log("onNotificationReceived $valueArray");
+  }
+
+  void checkNotiPurpose(Map data){
+    if(data["notificationPurpose"]=="Call"){
+      callPurpose(data);
+    }
+  }
+
+  void callPurpose(Map data){
+    initiateCallFromNoti(data);
   }
 
   @override

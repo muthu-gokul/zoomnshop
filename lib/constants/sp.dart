@@ -1,5 +1,7 @@
 
 class Sp{
+  static String MasterdropDown="USP_GetMasterDetail";
+
   static String loginSp="USP_UserLoginMobile";
   static String shopKeeperLoginSp="USP_UserLoginMobile";
   static String getDeviceStatus="USP_GetDeviceStatusDetail";
@@ -19,5 +21,8 @@ class Sp{
 
   static String getOrderHistory="USP_GetEndUserOrdersHistoryDetail";
   static String getHomePageDetail="USP_GetEndUserHomePageDetail";
+
+  static String getProductDetail="USP_GetProductDetail";
+  static String insertProductDetail="USP_InsertProductDetail";
 }
 

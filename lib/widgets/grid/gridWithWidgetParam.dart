@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../styles/constants.dart';
 import '../../utils/sizeLocal.dart';
 
 
 
 Color addNewTextFieldBorder=Color(0xFFE5E5E5);
 Color gridBodyBgColor=Color(0xFFFFFFFF);
-Color gridHeaderColor=Color(0xFF78797b);
-TextStyle gridHeaderTS=TextStyle(fontFamily: 'RM',color: gridHeaderColor,fontSize: 14);
+//Color gridHeaderColor=Color(0xFF78797b);
+//TextStyle gridHeaderTS=TextStyle(fontFamily: 'RM',color: gridHeaderColor,fontSize: 14);
 
 class GridWithWidgetParam extends StatefulWidget {
   
@@ -213,7 +214,7 @@ class _GridWithWidgetParamState extends State<GridWithWidgetParam> {
                       padding: EdgeInsets.only(left: 10),
                       alignment: Alignment.centerLeft,
                       decoration: BoxDecoration(
-                          color:showShadow? gridBodyBgColor:Colors.white,
+                          color:/*showShadow? gridBodyBgColor:*/Colors.white,
                           //borderRadius: BorderRadius.only(topRight: Radius.circular(10),),
                           boxShadow: [
                             showShadow?  BoxShadow(
@@ -238,20 +239,20 @@ class _GridWithWidgetParamState extends State<GridWithWidgetParam> {
                     height: SizeConfig.screenHeight!-widget.gridBodyReduceHeight!,
                     alignment: Alignment.topCenter,
                     decoration: BoxDecoration(
-                        color:showShadow? gridBodyBgColor:Colors.transparent,
+                        color:/*showShadow? gridBodyBgColor:*/Colors.white,
                         //color:Colors.red,
                         borderRadius: BorderRadius.only(
                           bottomRight: Radius.circular(10),
                           // bottomLeft: Radius.circular(10)
                         ),
                         boxShadow: [
-                          showShadow?  BoxShadow(
+                         /* showShadow? */ BoxShadow(
                            // color: grey.withOpacity(0.1),
                             color: Colors.grey[400]!,
                             spreadRadius: 0,
-                            blurRadius: 15,
-                            offset: Offset(0, 5), // changes position of shadow
-                          ):BoxShadow(color: Colors.transparent)
+                            blurRadius: 2,
+                            offset: Offset(0, 1), // changes position of shadow
+                          )/*:BoxShadow(color: Colors.transparent)*/
                         ]
                     ),
                     child: Container(

@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import '../../notifier/configuration.dart';
+import '../../notifier/notification/myNotification.dart';
 import '../../notifier/themeNotifier.dart';
 import '../../utils/sizeLocal.dart';
 import 'Appointment.dart';
@@ -22,14 +25,9 @@ class CustomerHomeScreen extends StatefulWidget {
   _CustomerHomeScreenState createState() => _CustomerHomeScreenState();
 }
 
-class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
+class _CustomerHomeScreenState extends State<CustomerHomeScreen> /*implements MyNotificationCallBack*/{
 
 
-  @override
-  void initState(){
-    getUserData;
-    super.initState();
-  }
 
   void getUserData() async{
     username.value=await getSharedPrefString(SP_USERNAME);
@@ -38,6 +36,19 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   GlobalKey <ScaffoldState> scaffoldkey=new GlobalKey<ScaffoldState>();
 
   late  double width,height,width2;
+  late MyNotification myNotification;
+
+  @override
+  void initState(){
+    getUserData;
+/*    myNotification=MyNotification();
+    myNotification.setMyCallBack(this);
+    myNotification.registerNotification();
+    myNotification.checkForInitialMessage();*/
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     width=MediaQuery.of(context).size.width;
@@ -243,6 +254,11 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
 
     );
   }
+
+  /*@override
+  void onNotificationReceived(List<dynamic> valueArray) {
+    log("onNotificationReceived $valueArray");
+  }*/
 }
 
 class DrawerContent extends StatelessWidget {

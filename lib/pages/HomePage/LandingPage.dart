@@ -544,9 +544,10 @@ class _HomePageState extends State<HomePage> {
                                                           Container(
                                                             child: Text('${homePageController.filterProductList[key]['ProductName']}',style: TextStyle(fontFamily: 'RB',color: Colors.black,fontSize: 13),),
                                                           ),
-                                                          /*Container(
-                                                            child: Text('129.00',style: TextStyle(fontFamily: 'RR',color: Colors.black26,fontSize: 12),),
-                                                          ),*/
+                                                          SizedBox(height: 5,),
+                                                          Container(
+                                                            child: Text('${homePageController.filterProductList[key]['Price']}',style: TextStyle(fontFamily: 'RM',color: Colors.black,fontSize: 15),),
+                                                          ),
                                                         ],
                                                       ),
                                                     ),

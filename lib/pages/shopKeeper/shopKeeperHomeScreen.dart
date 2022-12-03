@@ -138,7 +138,7 @@ class _ShopKeeperHomeScreenState extends State<ShopKeeperHomeScreen> {
                     scaffoldkey.currentState!.openEndDrawer();
                   },
                 ),
-            /*    DrawerContent(
+                DrawerContent(
                   title: 'Product Detail',
                   ontap: (){
                     setState(() {
@@ -146,7 +146,7 @@ class _ShopKeeperHomeScreenState extends State<ShopKeeperHomeScreen> {
                     });
                     scaffoldkey.currentState!.openEndDrawer();
                   },
-                ),*/
+                ),
               /*
 */
             /*    DrawerContent(
@@ -173,7 +173,7 @@ class _ShopKeeperHomeScreenState extends State<ShopKeeperHomeScreen> {
                 DrawerContent(
                   title: 'LogOut',
                   ontap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>CutomerLogin()),);
+                    Get.off(CutomerLogin());
                   },
                 ),
                 // Divider(color: Color(0xff099FAF),thickness: 0.1,),

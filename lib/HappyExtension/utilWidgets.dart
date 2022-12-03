@@ -9,9 +9,10 @@ TextStyle errorTS=TextStyle(fontFamily: 'RR',fontSize: 14,color: Color(0xFFE3434
 
 class HiddenController extends StatelessWidget {
   bool hasInput;
+  String dataname;
  // var value="".obs;
 
-  HiddenController({this.hasInput=true,});
+  HiddenController({this.hasInput=true,required this.dataname});
 
   Rxn value=Rxn();
 
@@ -29,9 +30,11 @@ class HiddenController extends StatelessWidget {
   getValue(){
     return value.value;
   }
-
   setValue(var val){
     value.value=val;
+  }
+  String getDataName(){
+    return dataname;
   }
 }
 Color addNewTextFieldText=Color(0xFF787878);
@@ -205,11 +208,11 @@ class AddNewLabelTextField extends StatelessWidget {
   }
 
   String getDataName(){
-    return this.dataname;
+    return dataname;
   }
 
   void clearValues(){
-    this.textEditingController.text="";
+    textEditingController.text="";
   }
 
   validate(){

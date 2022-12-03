@@ -115,4 +115,6 @@ static BoxShadow redShadow= BoxShadow(
  static TextStyle bgColorTS=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16);
  static const Color yellowColor=Color(0xFFff0022);
  static  Color gridbodyBgColor=Color(0xFFF6F7F9);
+
+ static  Color avatarBorderColor=Color(0xFFC7D0D8);
 }

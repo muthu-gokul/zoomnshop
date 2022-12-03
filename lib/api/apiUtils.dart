@@ -22,6 +22,7 @@ String GetImageBaseUrl(){
   return "https://scutisoft.in/zoomnshop/AppAttachments/";
 }
 
+
 getParameterEssential({bool needOutletId=false}) async{
   return [
     ParameterModel(Key: "LoginUserId", Type: "int", Value: await getLoginId()),

@@ -24,5 +24,7 @@ class Sp{
 
   static String getProductDetail="USP_GetProductDetail";
   static String insertProductDetail="USP_InsertProductDetail";
+  static String updateProductDetail="USP_UpdateProductDetail";
+  static String deleteProductDetail="USP_DeleteProductDetail";
 }
 

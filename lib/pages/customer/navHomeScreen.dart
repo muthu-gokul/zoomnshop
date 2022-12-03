@@ -200,7 +200,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> /*implements My
                 DrawerContent(
                   title: 'LogOut',
                   ontap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>CutomerLogin()),);
+                    Get.off(CutomerLogin());
                   },
                 ),
                 // Divider(color: Color(0xff099FAF),thickness: 0.1,),

@@ -4,6 +4,8 @@
 
 
 
+import 'dart:developer';
+
 import 'package:zoomnshop/HappyExtension/utils.dart';
 
 import '../model/parameterMode.dart';
@@ -128,9 +130,50 @@ setFrmValues(Map widgets,List response){
               widget.setValue(e.value.toString());
             }
             else if(widgetType=='searchDrp'){
-              widget.typeAheadSearchState.setValue(e.value,'');
+              widget.setValues({"Id",e.value});
             }
           }
+        }
+      }
+    }
+  }
+}
+setFrmValuesV2(List widgets,List response){
+  /* response
+  [{AgencyId: 5, AgencyName: Radiant E Serve, ServiceCenterName: Mi Authorized Service Center, AgencyAddress: No.5,West Perumaln Maistry St, Chennai Silks Road,Opp to Canara ATM, Madurai-625001, Tamil Nadu, AgencyCity: Madurai, AgencyPinCode: 625001, AgencyContactNumber: 9994630000, AgencyGSTNumber: 33ACIFS5122M2ZY, AgencyStateName: Tamil Nadu, AgencyEmail: vivekmurugan@scutisoft.in}]
+   */
+  //log("${widgets.length} $response");
+  if(response!=null){
+    if(response.isNotEmpty){
+      for(int i=0;i<response.length;i++){
+
+        response[i].forEach((key,value){
+          //log("Key $key $value");
+          var widget=null;
+          var foundWid=widgets.where((x) => x.getDataName()==key).toList();
+          if(foundWid.length==1){
+            widget=foundWid[0];
+          }
+          if(widget!=null){
+            String widgetType="";
+            try{
+              widgetType=widget.getType();
+            }catch(e){}
+
+            if(widgetType=='hidden'){
+              widget.setValue(value??"");
+            }
+            else if(widgetType=='inputTextField'){
+              widget.setValue(value.toString());
+            }
+            else if(widgetType=='searchDrp'){
+              widget.setValues({"Id":value});
+            }
+          }
+        });
+
+        for (MapEntry e in response[i].entries) {
+
         }
       }
     }

@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zoomnshop/pages/shopKeeper/shopKeeperProductAddNew.dart';
 
+import '../../api/ApiManager.dart';
 import '../../notifier/shopKeeper/skProductNotifier.dart';
 import '../../styles/constants.dart';
 import '../../utils/sizeLocal.dart';
+import '../../widgets/alertDialog.dart';
 import '../../widgets/closeButton.dart';
 import '../../widgets/fittedText.dart';
 import '../../widgets/grid/gridWithWidgetParam.dart';
+import '../../widgets/loader.dart';
 import '../../widgets/noDataFound.dart';
 
 class ProductMaster extends StatefulWidget {
@@ -67,7 +70,7 @@ class _ProductMasterState extends State<ProductMaster> {
                             icon: Icons.add,
                             iconSize: 25,
                             onTap: (){
-                              Get.to(ProductAddNew());
+                              Get.to(ProductAddNew(isEdit: false,));
                             },
                           ),
                           RefreshBtn(ontap: (){
@@ -196,18 +199,41 @@ class _ProductMasterState extends State<ProductMaster> {
                                             alignment: Alignment.center,
                                             padding: EdgeInsets.only(left: 10),
                                             width: 100,
-                                            child: GestureDetector(
-                                              onTap: (){
-                                                //Get.to(InvoiceTestAddNew(editId: '${value['InventoryBillingId']}',));
-                                               // invoiceNotifier.getBillingView(value['InventoryBillingId']);
-                                              },
-                                              child: Container(
-                                                height: 25,
-                                                width: 25,
-                                                alignment: Alignment.center,
-                                                color: Colors.transparent,
-                                             //   child: SvgPicture.asset("assets/icons/pdfView.svg"),
-                                              ),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: (){
+                                                    Get.to(ProductAddNew(isEdit: true,editId:  value['ProductId'],));
+                                                  },
+                                                  child: Container(
+                                                    height: 25,
+                                                    width: 25,
+                                                    alignment: Alignment.center,
+                                                    color: Colors.transparent,
+                                                    child: Icon(Icons.edit),
+                                                  ),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: (){
+                                                    CustomAlert(
+                                                      callback: (){
+                                                        skProductController.deleteProductDetail(productId:value['ProductId'] );
+                                                      },
+                                                      cancelCallback: (){
+
+                                                      }
+                                                    ).yesOrNoDialog2("assets/images/icons/delete.jpg", "Are you sure want to delete this Product ?", false);
+                                                  },
+                                                  child: Container(
+                                                    height: 25,
+                                                    width: 25,
+                                                    alignment: Alignment.center,
+                                                    color: Colors.transparent,
+                                                    child: Icon(Icons.delete,color: Colors.red,),
+                                                  ),
+                                                ),
+                                              ],
                                             )
                                         ),
                                       ]
@@ -226,7 +252,7 @@ class _ProductMasterState extends State<ProductMaster> {
             ),
           ),
 
-
+          Obx(() => Loader(value: showLoader.value,))
 
           //bottomNav
           /*Positioned(

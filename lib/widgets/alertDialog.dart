@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../utils/colorUtil.dart';
+import '../utils/sizeLocal.dart';
 import 'toast.dart';
 
 class CustomAlert{
@@ -454,7 +455,7 @@ class CustomAlert{
           clipBehavior: Clip.antiAlias,
           child: Container(
              height:hei,
-              width:330,
+              width:SizeConfig.screenWidth!-40,
               decoration:BoxDecoration(
                 color:Colors.white,
               ),
@@ -486,7 +487,7 @@ class CustomAlert{
                           },
                           child: Container(
                             height: 50.0,
-                            width: 140.0,
+                            width: (SizeConfig.screenWidth!-80)*0.4,
                             //margin: EdgeInsets.only(bottom: 0,top:20),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
@@ -517,7 +518,7 @@ class CustomAlert{
                           },
                           child: Container(
                             height: 50.0,
-                            width: 140.0,
+                            width: (SizeConfig.screenWidth!-80)*0.4,
                            // margin: EdgeInsets.only(bottom: 0,top:20),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),

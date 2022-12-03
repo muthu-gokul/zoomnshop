@@ -46,3 +46,13 @@ String getAppoiStatusByIndex(int i){
       return 'UpComing';
   }
 }
+
+String getImgFileName(dynamic x){
+  var arr=x.toString().split("/");
+  if(arr.length==2){
+    return arr[1];
+  }
+  else{
+    return x;
+  }
+}

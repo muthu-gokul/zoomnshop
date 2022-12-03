@@ -232,6 +232,10 @@ class Search2 extends StatelessWidget {
   getType(){
     return 'searchDrp';
   }
+  validate(){
+    return getValue()!=null || getValue()!='';
+  }
+
 }
 
 class Search2MultiSelect extends StatelessWidget {

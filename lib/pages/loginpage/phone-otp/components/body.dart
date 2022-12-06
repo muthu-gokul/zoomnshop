@@ -8,7 +8,7 @@ import '../../../../styles/constants.dart';
 import '../../../../styles/style.dart';
 import '../../../../utils/sizeLocal.dart';
 import '../../../HomePage/LandingPage.dart';
-import '../../../navHomeScreen.dart';
+import '../../../customer/navHomeScreen.dart';
 import 'otp_form.dart';
 
 class Body extends StatelessWidget {
@@ -54,7 +54,7 @@ class Body extends StatelessWidget {
                   GestureDetector(
                     onTap: (){
 
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Masterpage()),);//
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>CustomerHomeScreen()),);
 
 
                     },

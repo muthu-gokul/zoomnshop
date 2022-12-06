@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 
 import '../styles/constants.dart';
 import '../styles/style.dart';
+import '../utils/colorUtil.dart';
 
 class CustomAppBar extends StatelessWidget {
   String title;
   Widget? prefix;
-  CustomAppBar({required this.title,this.prefix});
+  Widget? suffix;
+  CustomAppBar({required this.title,this.prefix,this.suffix});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +28,9 @@ class CustomAppBar extends StatelessWidget {
                 child: Icon(Icons.arrow_back_ios_new_outlined,color: text1,size: 20,)
             ),
           ):prefix!,
-          Text(title,style: ts16(text1,fontfamily: 'RM'),)
+          Text(title,style:  ts18(ColorUtil.primaryTextColor2),),
+          Spacer(),
+          suffix??Container()
         ],
       ),
     );

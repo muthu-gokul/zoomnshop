@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zoomnshop/styles/constants.dart';
 
 class SizeConfig {
   static late MediaQueryData mediaQueryData;
@@ -12,7 +13,7 @@ class SizeConfig {
   void init(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
     screenWidth = mediaQueryData.size.width;
-    screenHeight = mediaQueryData.size.height;
+    screenHeight = mediaQueryData.size.height-topPadding;
     blockSizeHorizontal = screenWidth! / 100;
     blockSizeVertical = screenHeight! / 100;
     topPad=mediaQueryData.padding.top;

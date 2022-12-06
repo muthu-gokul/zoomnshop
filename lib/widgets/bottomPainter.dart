@@ -6,8 +6,8 @@ import 'package:zoomnshop/pages/myOrder/OrderDeliveryDetails.dart';
 import 'package:zoomnshop/pages/myOrder/myOrderDetails.dart';
 
 import '../notifier/themeNotifier.dart';
-import '../pages/HomePage/Cartpage.dart';
-import '../pages/navHomeScreen.dart';
+import '../pages/customer/Cartpage.dart';
+import '../pages/customer/navHomeScreen.dart';
 import '../utils/sizeLocal.dart';
 
 class RPSCustomPainter3 extends CustomPainter {
@@ -143,7 +143,7 @@ class BottomNavi extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Masterpage()),);
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>CustomerHomeScreen()),);
                     },
                     child: Container(
                       width: 40,

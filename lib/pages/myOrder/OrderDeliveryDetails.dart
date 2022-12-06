@@ -5,10 +5,12 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 import 'package:zoomnshop/pages/HomePage/LandingPage.dart';
-import 'package:zoomnshop/pages/HomePage/OrderSuccess.dart';
+import 'package:zoomnshop/pages/customer/OrderSuccess.dart';
 
+import '../../notifier/customer/orderHistoryNotifier.dart';
 import '../../notifier/themeNotifier.dart';
 import '../../styles/constants.dart';
+import '../../utils/colorUtil.dart';
 import '../../utils/sizeLocal.dart';
 import '../../widgets/bottomPainter.dart';
 import '../../widgets/companySettingsTextField.dart';
@@ -94,7 +96,7 @@ class _OrderDeliveryDetailsState extends State<OrderDeliveryDetails> {
                                       SizedBox(height: 5,),
                                       Container(
                                         alignment: Alignment.center,
-                                        child: Text('7 ITEMS',style: TextStyle(fontFamily: 'RR',fontSize: 18,color: Colors.black38,letterSpacing: 0.1),),
+                                        child: Obx(() => Text('${orderHistoryController.orderHistoryProductList.length} ITEMS',style: TextStyle(fontFamily: 'RR',fontSize: 18,color: Colors.black38,letterSpacing: 0.1),)),
                                       ),
                                     ],
                                   ),
@@ -106,96 +108,97 @@ class _OrderDeliveryDetailsState extends State<OrderDeliveryDetails> {
                       ),
                     ),
                    // SizedBox(height:20,),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        margin:EdgeInsets.only(left:15.0,right: 15.0) ,
-                        padding: EdgeInsets.only(top: 10),
-                        height: 430,
-                        width:width*0.95,
-                        child: ListView.builder(
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Obx(() => ListView.builder(
                             physics: BouncingScrollPhysics(),
-                            itemCount: 7,
+                            //shrinkWrap: true,
+                            itemCount: orderHistoryController.orderHistoryProductList.length,
                             itemBuilder: (ctx,i){
-                          return  Container(
-                            margin: EdgeInsets.only(bottom: 10),
-                            width: width*0.95,
-                            height:132,
-                            child: Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    margin:EdgeInsets.only(right: 20),
-                                      child: Image.asset("assets/images/landingPage/slice-02.jpg",fit:BoxFit.cover,height: 120,),
-                                  ),
-                                  Flexible(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Flexible(
-                                          child: Text('The  North Face 100 Glacier 1/4 zip'
-                                            ,style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.black),),
-                                        ),
-                                        SizedBox(height: 10,),
-                                        Text('₹ 90.00'
-                                          ,style: TextStyle(fontFamily: 'RB',fontSize: 16,color: Colors.black,letterSpacing: 0.1),),
-                                      ],
+                              return  Container(
+                                margin: EdgeInsets.only(bottom: 10),
+                                width: width*0.95,
+                                //height:132,
+                                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    /* Container(
+                                        margin:EdgeInsets.only(right: 20),
+                                        child: Image.asset("assets/images/landingPage/slice-02.jpg",fit:BoxFit.cover,height: 120,),
+                                      ),*/
+                                    Flexible(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Flexible(
+                                            child: Text('${orderHistoryController.orderHistoryProductList[i]['ProductName']}'
+                                              ,style: TextStyle(fontFamily: 'RR',fontSize: 15,color: ColorUtil.black),),
+                                          ),
+                                          //SizedBox(height: 10,),
+                                          /*Text('₹ 90.00'
+                                              ,style: TextStyle(fontFamily: 'RB',fontSize: 16,color: Colors.black,letterSpacing: 0.1),
+                                            ),*/
+                                        ],
+                                      ),
                                     ),
-                                  ),
 
-                                  Container(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            // addRemoveBtn(Icon(Icons.add,color: tn.primaryColor,size: 25,)),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 10,right: 10),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+
+                                              Container(
+                                                //height: 40,
+                                                //width: 40,
+                                                alignment: Alignment.center,
+                                                padding:EdgeInsets.all(7),
+                                                decoration: BoxDecoration(
+                                                  color:Color(0xffffffff),
+                                                  shape: BoxShape.circle,
+                                                  border: Border.all(
+                                                    color: Colors.black12, //                   <--- border color
+                                                  ),
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(left: 5,right: 5),
+                                                  child: Text("${orderHistoryController.orderHistoryProductList[i]['Quantity']} x",style: gridTextColor15 ,),
+                                                ),
+                                              ),
+
+                                            ],
+
+                                          ),
+                                          /*  SizedBox(height: 10,),
                                             Container(
                                               height: 40,
                                               width: 40,
                                               alignment: Alignment.center,
                                               decoration: BoxDecoration(
-                                                  color:Color(0xffffffff),
-                                                  shape: BoxShape.circle,
-                                                border: Border.all(
-                                                  color: Colors.black12, //                   <--- border color
-                                                ),
+                                                  color: Color(0xffEADCF6),
+                                                  shape: BoxShape.circle
                                               ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(left: 5,right: 5),
-                                                child: Text("1X",style: gridTextColor15 ,),
-                                              ),
-                                            ),
-                                            // addRemoveBtn(Icon(Icons.remove,color: tn.primaryColor,size: 25,)),
-                                          ],
-
-                                        ),
-                                        SizedBox(height: 10,),
-                                        Container(
-                                          height: 40,
-                                          width: 40,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                              color: Color(0xffEADCF6),
-                                              shape: BoxShape.circle
-                                          ),
-                                          child: Text("M",style: TextStyle(fontFamily: 'RB',fontSize: 16,color: Color(0xff67517F),letterSpacing: 0.1)),
-                                        ),
-                                      ],
+                                              child: Text("M",style: TextStyle(fontFamily: 'RB',fontSize: 16,color: Color(0xff67517F),letterSpacing: 0.1)),
+                                            ),*/
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }),
-                        ),
+                                  ],
+                                ),
+                              );
+                            })),
+                      ),
                     ),
+
                     Container(
                       margin:  EdgeInsets.only(left:5),
                       child: Row(
@@ -221,7 +224,7 @@ class _OrderDeliveryDetailsState extends State<OrderDeliveryDetails> {
                             ),
                           ),
                           Container(
-                            width: SizeConfig.screenWidth!!*0.65,
+                            width: SizeConfig.screenWidth!*0.65,
                             decoration: BoxDecoration(
                               border: Border(bottom: BorderSide( //                    <--- top side
                                 color: Color(0XFFF5F6FA),
@@ -233,10 +236,10 @@ class _OrderDeliveryDetailsState extends State<OrderDeliveryDetails> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Total :',style: TextStyle(fontFamily: 'RR',fontSize:16,color: Colors.black26,letterSpacing: 0.1),),
+                                Text('Total Qty:',style: TextStyle(fontFamily: 'RR',fontSize:16,color: Colors.black26,letterSpacing: 0.1),),
                                 SizedBox(height: 5,),
-                                Text('₹ 300.00'
-                                  ,style: TextStyle(fontFamily: 'RB',fontSize: 24,color: Colors.black,letterSpacing: 0.1),),
+                                Obx(() => Text('${orderHistoryController.totalQty.value}'
+                                  ,style: TextStyle(fontFamily: 'RB',fontSize: 24,color: Colors.black,letterSpacing: 0.1),)),
                                 SizedBox(height: 10,),
                               ],
                             ),
@@ -244,8 +247,8 @@ class _OrderDeliveryDetailsState extends State<OrderDeliveryDetails> {
                         ],
                       ),
                     ),
-                    Spacer(),
-                    GestureDetector(
+                    //Spacer(),
+                   /* GestureDetector(
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context)=>OrderSuccessful()),);
                       },
@@ -259,7 +262,7 @@ class _OrderDeliveryDetailsState extends State<OrderDeliveryDetails> {
                         alignment: Alignment.center,
                         child: Text("Delivered On 12-09-2022 / 9.30 AM",style: TextStyle(fontFamily: 'RR',fontSize:16,color: Color(0XFF38862C),letterSpacing: 0.1),),
                       ),
-                    ),
+                    ),*/
                     SizedBox(height: 15,),
                   ],
                 ),

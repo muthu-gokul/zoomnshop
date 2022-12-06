@@ -8,7 +8,7 @@
  String alphaSpaceRegEx='[A-Za-z ]';
  String addressRegEx='[A-Za-z0-9-,_/*+()@. ]';
  //String currentDate=DateFormat("dd-MM-yyyy").format(DateTime.now());
- String dbDateFormat="dd-MM-yyyy";
+ String dbDateFormat="yyyy-MM-dd";
 
  //var formatCurrency = NumberFormat.currency(locale: 'HI',name: "");
 
@@ -33,12 +33,13 @@ const Color addNewTextFieldFocusBorder=Color(0xFF6B6B6B);
 
  Border gridBottomborder= Border(bottom: BorderSide(color: addNewTextFieldBorder.withOpacity(0.5)));
  TextStyle bgColorTS14=TextStyle(fontFamily: 'RR',color: bgColor,fontSize: 14);
- TextStyle gridHeaderTS=TextStyle(fontFamily: 'RR',color: bgColor,fontSize: 16);
+ TextStyle gridHeaderTS=TextStyle(fontFamily: 'RM',color: grey,fontSize: 16);
  TextStyle gridTextColor14=TextStyle(fontFamily: 'RR',color: grey,fontSize: 14);
  TextStyle gridTextColor15=TextStyle(fontFamily: 'RR',color:Colors.black,fontSize: 14);
  TextStyle TSWhite166=TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1);
  TextStyle hintText=TextStyle(fontFamily: 'RR',fontSize: 16,color: grey.withOpacity(0.5));
  TextStyle whiteRM20=TextStyle(fontFamily: 'RM',color: Colors.white,fontSize: 20);
+
 
  late String prefEmail;
  late String prefPassword;
@@ -56,8 +57,7 @@ const Color addNewTextFieldFocusBorder=Color(0xFF6B6B6B);
  );
 
  final otpInputDecoration = InputDecoration(
-  contentPadding:
-  EdgeInsets.symmetric(vertical: 15),
+  contentPadding: EdgeInsets.symmetric(vertical: 15),
   border: outlineInputBorder(),
   focusedBorder: outlineInputBorder(),
   enabledBorder: outlineInputBorder(),
@@ -81,4 +81,5 @@ const Color addNewTextFieldFocusBorder=Color(0xFF6B6B6B);
  Duration animeDuration=Duration(milliseconds: 300);
  Cubic animeCurve=Curves.easeIn;
 
-
+ const int BOTTOMSHEET_DELAY=800;
+double topPadding=0.0;

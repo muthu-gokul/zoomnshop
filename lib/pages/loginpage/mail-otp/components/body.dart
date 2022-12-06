@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:zoomnshop/pages/loginpage/login.dart';
-import 'package:zoomnshop/pages/navHomeScreen.dart';
+import 'package:zoomnshop/pages/customer/navHomeScreen.dart';
 
 
 import '../../../../styles/constants.dart';
@@ -53,7 +53,7 @@ class Body extends StatelessWidget {
                   GestureDetector(
                     onTap: (){
 
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Masterpage()),);//
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>CustomerHomeScreen()),);//
 
 
                     },

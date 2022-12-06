@@ -698,7 +698,7 @@ class DropdownSearchState<T> extends State<DropdownSearch<T>> {
             contentPadding: EdgeInsets.all(0),
             shape: widget.popupShape,
             backgroundColor: widget.popupBackgroundColor,
-            content: _selectDialogInstance(),
+            content: widget.dialogWidget,
           ),
         );
       },

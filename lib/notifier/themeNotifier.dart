@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:zoomnshop/utils/colorUtil.dart';
 
 class ThemeNotifier extends ChangeNotifier{
   int selectThemeIndex=1;
 
-  Color primaryColor=Color(0xffFE316C);
+  Color primaryColor=ColorUtil.primaryColor;
   Color primaryColor1=Color(0XFF4E6713);
   Color primaryColor2=Color(0xFFE0E8D3);
   Color primaryColor3=Color(0xFF90A75B);
@@ -15,7 +16,7 @@ class ThemeNotifier extends ChangeNotifier{
     selectThemeIndex=index;
 
     if(index==1){
-      primaryColor=Color(0xffFE316C);
+      primaryColor=ColorUtil.primaryColor;
       primaryColor1=Color(0XFF4E6713);
       primaryColor2=Color(0xFFE0E8D3);
       primaryColor3=Color(0xFF90A75B);
@@ -50,7 +51,7 @@ class ThemeNotifier extends ChangeNotifier{
 
 
     else{
-      primaryColor=Color(0xffFE316C);
+      primaryColor=ColorUtil.primaryColor;
     }
 
 

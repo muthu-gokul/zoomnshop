@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:zoomnshop/pages/shopKeeper/shopKeeperAppointment.dart';
 import '../../notifier/configuration.dart';
 import '../../notifier/themeNotifier.dart';
+import '../../notifier/utils.dart';
 import '../../utils/sizeLocal.dart';
 import '../customer/Cartpage.dart';
 import '../HomePage/LandingPage.dart';
@@ -173,6 +174,7 @@ class _ShopKeeperHomeScreenState extends State<ShopKeeperHomeScreen> {
                 DrawerContent(
                   title: 'LogOut',
                   ontap: (){
+                    onLogout();
                     Get.off(CutomerLogin());
                   },
                 ),

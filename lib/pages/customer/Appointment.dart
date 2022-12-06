@@ -357,13 +357,9 @@ class _AppointmentDetailsState extends State<AppointmentDetails> with TickerProv
                                           alignment: Alignment.centerRight,
                                           child: CallBtn(
                                             ontap: ()async{
-                                              var map={
-                                                "name":await getSharedPrefString(SP_USERNAME),
-                                                "userId":upcomingCustomerApplist[i]['CallUserId'],
-                                                "callID":upcomingCustomerApplist[i]['RoomName']
-                                              };
-                                              /*log("${upcomingCustomerApplist[i]['CallUserId']} ${upcomingCustomerApplist[i]['RoomUniqueId']} ${upcomingCustomerApplist[i]['RoomName']} ${map}");
+                                              /*log("${upcomingCustomerApplist[i]} ${upcomingCustomerApplist[i]['RoomUniqueId']} ${upcomingCustomerApplist[i]['RoomName']}}");
                                               return;*/
+                                              updateCallStatusCustomer(6,upcomingCustomerApplist[i]['AppointmentId'],upcomingCustomerApplist[i]['ClientOutletId']);
                                              initiateCall(upcomingCustomerApplist[i]['CallUserId'],upcomingCustomerApplist[i]['RoomUniqueId'],await getSharedPrefString(SP_USERNAME),upcomingCustomerApplist[i]['RoomName']);
                                             },
                                           ),

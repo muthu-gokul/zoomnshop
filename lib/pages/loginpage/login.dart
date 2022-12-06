@@ -15,6 +15,7 @@ import 'package:zoomnshop/widgets/loader.dart';
 import '../../api/ApiManager.dart';
 import '../../model/parameterMode.dart';
 import '../../notifier/netConnectivityNotifier.dart';
+import '../../notifier/utils.dart';
 import '../../styles/constants.dart';
 import '../../styles/style.dart';
 import '../../utils/sizeLocal.dart';
@@ -303,7 +304,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
           params.add(ParameterModel(Key: "Type", Type: "String", Value: 1));
           params.add(ParameterModel(Key: "MPINNumber", Type: "String", Value: null));
           params.add(ParameterModel(Key: "OTPNumber", Type: "String", Value: null));
-          ApiManager().GetInvokeLogin(params).then((response){
+          ApiManager().GetInvokeLogin(params).then((response) async {
             if(response[0]){
               setState(() {
                 isLoading=false;
@@ -325,6 +326,10 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                 }
                 else{
                   CustomAlert().commonErrorAlert("Access Denied", "");
+                }
+                String ft=await getSharedPrefString(SP_FIREBASETOKEN);
+                if(ft.isNotEmpty) {
+                  updateNotificationId(ft);
                 }
               }
 

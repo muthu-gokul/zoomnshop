@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:zoomnshop/notifier/utils.dart';
 import '../../notifier/configuration.dart';
 import '../../notifier/notification/myNotification.dart';
 import '../../notifier/themeNotifier.dart';
@@ -200,6 +201,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> /*implements My
                 DrawerContent(
                   title: 'LogOut',
                   ontap: (){
+                    onLogout();
                     Get.off(CutomerLogin());
                   },
                 ),

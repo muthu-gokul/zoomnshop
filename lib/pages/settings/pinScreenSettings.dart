@@ -53,6 +53,10 @@ class _PinScreenSettingsState extends State<PinScreenSettings> {
 
   void getPinStatus() async{
     String pinNo=await getSharedPrefString(SP_PIN);
+
+    log("pinBo $pinNo");
+
+    return;
     if(widget.fromLogin){
       setState((){
         hasPin=pinNo.isNotEmpty;
@@ -84,8 +88,8 @@ class _PinScreenSettingsState extends State<PinScreenSettings> {
                       visible: widget.fromLogin,
                       child: TextButton(onPressed: (){
                     insertDeviceInfo("");
-                    navigateByUserType();
-                  }, child: Text("Skip        ",style: ts18(ColorUtil.red,fontfamily: 'RM',),))),
+                    checkHasCall();
+                      }, child: Text("Skip        ",style: ts18(ColorUtil.red,fontfamily: 'RM',),))),
                 ),
                 Visibility(
                     visible: !hasPin,
@@ -181,8 +185,8 @@ class _PinScreenSettingsState extends State<PinScreenSettings> {
 
                           GestureDetector(
                             onTap:(){
-
                               Get.back();
+                              setSharedPrefBool(false, SP_ALLOWFINGERPRINT);
                               createPin(pin);
                               // cancelCallback!();
                             },
@@ -308,7 +312,7 @@ class _PinScreenSettingsState extends State<PinScreenSettings> {
         log("$parsed");
         insertDeviceInfo(pin);
         if(widget.fromLogin){
-          navigateByUserType();
+          checkHasCall();
         }
         else{
           CustomAlert().successAlert(parsed['TblOutPut'][0]['@Message'], '');
@@ -323,15 +327,29 @@ class _PinScreenSettingsState extends State<PinScreenSettings> {
     });
   }
 
+  void checkHasCall() async{
+    String nb=await getSharedPrefString(SP_NOTIFICATIONBODY);
+    if(nb.isEmpty){
+      navigateByUserType();
+    }
+    else{
+      checkNotiPurpose(jsonDecode(nb));
+      setSharedPrefString("", SP_NOTIFICATIONBODY);
+    }
+  }
+
   void insertDeviceInfo(pin) async{
+    String ft=await getSharedPrefString(SP_FIREBASETOKEN);
     List<ParameterModel> params=await getParameterEssential();
     params.add(ParameterModel(Key: "SpName", Type: "String", Value: Sp.insertUserDevice));
     params.add(ParameterModel(Key: "MPINNumber", Type: "String", Value: pin));
     params.add(ParameterModel(Key: "DeviceInfo", Type: "String", Value: deviceData.toString()));
+    params.add(ParameterModel(Key: "NotificationTokenNumber", Type: "String", Value: ft));
+    //log("insertDeviceInfo ${jsonEncode(params)}");
     ApiManager().GetInvoke(params).then((response) async {
       if(response[0]){
         var parsed=json.decode(response[1]);
-        log("$parsed");
+        log("insertDeviceInfo $parsed");
       }
     });
   }

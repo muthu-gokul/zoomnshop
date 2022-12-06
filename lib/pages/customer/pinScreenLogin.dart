@@ -90,7 +90,12 @@ class _PinScreenLoginState extends State<PinScreenLogin> {
 
     final String message = authenticated ? 'Authorized' : 'Not Authorized';
     if(authenticated){
-      navigateByUserType();
+      if(localMpin.isEmpty){
+        navigateByUserType();
+      }
+      else{
+        login(localMpin);
+      }
     }
     setState(() {
       //_authorized = message;
@@ -142,6 +147,7 @@ class _PinScreenLoginState extends State<PinScreenLogin> {
     ));
   }
   void login(pin) async{
+
     List<ParameterModel> params=[];
     params.add(ParameterModel(Key: "SpName", Type: "String", Value: Sp.loginSp));
     params.add(ParameterModel(Key: "UserName", Type: "String", Value: await getSharedPrefString(SP_USEREMAIL)));
@@ -150,20 +156,33 @@ class _PinScreenLoginState extends State<PinScreenLogin> {
     params.add(ParameterModel(Key: "Type", Type: "String", Value: 2));
     params.add(ParameterModel(Key: "MPINNumber", Type: "String", Value: pin));
     params.add(ParameterModel(Key: "OTPNumber", Type: "String", Value: null));
-    ApiManager().GetInvokeLogin(params).then((response){
+    ApiManager().GetInvokeLogin(params).then((response) async {
       if(response[0]){
         var parsed=json.decode(response[1]);
         log("pin $parsed");
         var t =parsed['Table'];
         if(t.length>0){
-          if(t[0]['UserTypeId']==UserType.customer.index){
-            Get.off(const CustomerHomeScreen());
+          String ft=await getSharedPrefString(SP_FIREBASETOKEN);
+          if(ft.isNotEmpty) {
+            updateNotificationId(ft);
           }
-          else if(t[0]['UserTypeId']==UserType.shopKeeper.index){
-            Get.off(ShopKeeperHomeScreen());
+          setSharedPrefString(t[0]['LoginUserId'], SP_USER_ID);
+
+          String nb=await getSharedPrefString(SP_NOTIFICATIONBODY);
+          if(nb.isEmpty){
+            if(t[0]['UserTypeId']==UserType.customer.index){
+              Get.off(const CustomerHomeScreen());
+            }
+            else if(t[0]['UserTypeId']==UserType.shopKeeper.index){
+              Get.off(ShopKeeperHomeScreen());
+            }
+            else{
+              CustomAlert().commonErrorAlert("Access Denied", "");
+            }
           }
           else{
-            CustomAlert().commonErrorAlert("Access Denied", "");
+            checkNotiPurpose(jsonDecode(nb));
+            setSharedPrefString("", SP_NOTIFICATIONBODY);
           }
         }
       }

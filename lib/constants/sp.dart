@@ -26,5 +26,7 @@ class Sp{
   static String insertProductDetail="USP_InsertProductDetail";
   static String updateProductDetail="USP_UpdateProductDetail";
   static String deleteProductDetail="USP_DeleteProductDetail";
+
+  static String updateNotificationId="USP_InsertUserDeviceNotificationTokenDetail";
 }
 

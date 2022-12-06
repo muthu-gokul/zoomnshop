@@ -16,7 +16,9 @@ import 'configuration.dart';
 
 var videoCallBody={};
 initiateCall(userId, roomId, name, roomName) async{
-  Get.to(VideoCallPage(name: name,userId: await getSharedPrefString(SP_USER_ID),callID: roomName,));
+  Get.to(VideoCallPage(name: name,userId: await getSharedPrefString(SP_USER_ID),callID: roomName,))!.then((value){
+    navigateByUserType();
+  });
   return;
   videoCallBody={'user_id': userId,
     'role': await getUserRoleForCall(),
@@ -24,7 +26,14 @@ initiateCall(userId, roomId, name, roomName) async{
   showPreview(true,name,'https://zoomnshop.app.100ms.live/meeting/'+roomName);
 }
 initiateCallFromNoti(Map data) async{
-  Get.to(VideoCallPage(name: data['name'],userId: data['userId'],callID: data['callId'],));
+  if(data['appointmentId'] != null && data['appointmentId']!=""){
+    setSharedPrefString(data['appointmentId'], SP_CURRENTCALLAPPOINTMENTID);
+    setSharedPrefString(data['clientOutletId'], SP_CURRENTCALLCLIENTOUTLETID);
+  }
+  Get.to(VideoCallPage(name: data['name'],userId: data['userId'],callID: data['callId'],))!.then((value){
+    setSharedPrefString("", SP_NOTIFICATIONBODY);
+    navigateByUserType();
+  });
 }
 
 void updateCallStatus(appointmentStatusId) async{
@@ -33,16 +42,30 @@ void updateCallStatus(appointmentStatusId) async{
     getShopKeeperAppointmentDetail(getAppoiStatusByIndex(0));
     return;
   }
+  String clientOutletId=await getSharedPrefString(SP_CURRENTCALLCLIENTOUTLETID);
   List<ParameterModel> params=await getParameterEssential();
   params.add(ParameterModel(Key: "SpName", Type: "String", Value: Sp.updateCallStatus));
   params.add(ParameterModel(Key: "AppointmentId", Type: "String", Value:aid ));
-  params.add(ParameterModel(Key: "ClientOutletId", Type: "String", Value: await getSharedPrefString(SP_COMPANYID)));
+  params.add(ParameterModel(Key: "ClientOutletId", Type: "String", Value: clientOutletId));
   params.add(ParameterModel(Key: "AppointmentStatusId", Type: "String", Value: appointmentStatusId));
   ApiManager().GetInvoke(params).then((response) async {
     if(response[0]){
       var parsed=json.decode(response[1]);
       log("updateCallStatus $parsed");
       getShopKeeperAppointmentDetail(getAppoiStatusByIndex(0));
+      if(appointmentStatusId==7){
+        setSharedPrefString("", SP_CURRENTCALLAPPOINTMENTID);
+        setSharedPrefString("", SP_CURRENTCALLCLIENTOUTLETID);
+      }
     }
   });
 }
+void updateCallStatusCustomer(appointmentStatusId,aid,coId) async{
+  List<ParameterModel> params=await getParameterEssential();
+  params.add(ParameterModel(Key: "SpName", Type: "String", Value: Sp.updateCallStatus));
+  params.add(ParameterModel(Key: "AppointmentId", Type: "String", Value:aid ));
+  params.add(ParameterModel(Key: "ClientOutletId", Type: "String", Value:coId));
+  params.add(ParameterModel(Key: "AppointmentStatusId", Type: "String", Value: appointmentStatusId));
+  ApiManager().GetInvoke(params).then((response) async {});
+}
+

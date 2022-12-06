@@ -256,7 +256,9 @@ class _ShopKeeperAppointmentDetailState extends State<ShopKeeperAppointmentDetai
                                             visible: upcomingSKAppoList[i]['AppointmentStatusId']==1,
                                             child: CallBtn(ontap: () async{
                                               setSharedPrefString(upcomingSKAppoList[i]['AppointmentId'], SP_CURRENTCALLAPPOINTMENTID);
+                                              setSharedPrefString(upcomingSKAppoList[i]['ClientOutletId'], SP_CURRENTCALLCLIENTOUTLETID);
                                               skCartController.getProductDrp();
+                                              updateCallStatus(6);
                                               initiateCall(upcomingSKAppoList[i]['CallUserId'],upcomingSKAppoList[i]['RoomUniqueId'],await getSharedPrefString(SP_USERNAME),upcomingSKAppoList[i]['RoomName']);
                                             }),
                                           ),

@@ -44,7 +44,6 @@ class _SplashScreenState extends State<SplashScreen> implements MyNotificationCa
       else{
         Get.off(LoginPage());
       }
-
     });
   }
 
@@ -57,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> implements MyNotificationCa
     initPlatformState().then((value){
       print("deive Id ${getDeviceId()}");
       checkUserData();
-      getFirebaseToken();
+
     });
     if(Platform.isAndroid){
       _checkBiometrics();
@@ -66,6 +65,7 @@ class _SplashScreenState extends State<SplashScreen> implements MyNotificationCa
   }
 
   void checkUserData() async{
+    await getFirebaseToken();
     String userId=await getSharedPrefString( SP_USER_ID);
     if(userId.isEmpty){
       navigate();
@@ -76,6 +76,7 @@ class _SplashScreenState extends State<SplashScreen> implements MyNotificationCa
   }
 
   void getDeviceStatus(userId) async{
+
     String pin=await getSharedPrefString(SP_PIN);
     //log("pin $pin");
     List<ParameterModel> params=[];
@@ -83,6 +84,7 @@ class _SplashScreenState extends State<SplashScreen> implements MyNotificationCa
     params.add(ParameterModel(Key: "LoginUserId", Type: "String", Value: userId));
     params.add(ParameterModel(Key: "DeviceId", Type: "String", Value: getDeviceId()));
     params.add(ParameterModel(Key: "database", Type: "String", Value: getDatabase()));
+
     print(jsonEncode(params));
     ApiManager().GetInvoke(params).then((response){
       if(response[0]){
@@ -123,16 +125,15 @@ class _SplashScreenState extends State<SplashScreen> implements MyNotificationCa
     setSharedPrefBool(canCheckBiometrics, SP_HASFINGERPRINT);
   }
 
-  void getFirebaseToken() async{
+  Future<void> getFirebaseToken() async{
     String ft=await getSharedPrefString(SP_FIREBASETOKEN);
-    FirebaseMessaging.instance.getToken().then((value){
+    await FirebaseMessaging.instance.getToken().then((value){
       log("FT $value");
       if(ft!=value){
-
         FirebaseDatabase.instance.ref().child("tokens/${getDeviceId().toString().replaceAll(".", "")}").set({"token":value,"LastUpdated":DateTime.now().toString()});
+        updateNotificationId(value);
         setSharedPrefString(value, SP_FIREBASETOKEN);
       }
-
     });
 
   }
@@ -143,23 +144,28 @@ class _SplashScreenState extends State<SplashScreen> implements MyNotificationCa
       checkNotiPurpose(valueArray);
     }
     else if(type==NotificationMode.onMessageClickOpen){
-      checkNotiPurpose(valueArray);
+
+
+      String ms=json.encode(valueArray);
+      setSharedPrefString(ms, SP_NOTIFICATIONBODY);
+      if(!Get.currentRoute.contains('SplashScreen')){
+        Get.to(SplashScreen());
+      }
+      //checkNotiPurpose(valueArray);
     }
     else if(type==NotificationMode.initialMessage){
-      checkNotiPurpose(valueArray);
+      //checkNotiPurpose(valueArray);
+      String ms=json.encode(valueArray);
+      setSharedPrefString(ms, SP_NOTIFICATIONBODY);
+      if(!Get.currentRoute.contains('SplashScreen')){
+        Get.to(SplashScreen());
+      }
     }
     log("onNotificationReceived $valueArray");
   }
 
-  void checkNotiPurpose(Map data){
-    if(data["notificationPurpose"]=="Call"){
-      callPurpose(data);
-    }
-  }
 
-  void callPurpose(Map data){
-    initiateCallFromNoti(data);
-  }
+
 
   @override
   Widget build(BuildContext context) {

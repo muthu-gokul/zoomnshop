@@ -118,7 +118,9 @@ const String SP_ALLOWFINGERPRINT="allowfingerprint";
 const String SP_USERNAME="username";
 const String SP_COMPANYID="companyid";
 const String SP_CURRENTCALLAPPOINTMENTID="appointmentid";
+const String SP_CURRENTCALLCLIENTOUTLETID="curroutletid";
 const String SP_FIREBASETOKEN="ft";
+const String SP_NOTIFICATIONBODY="nb";
 
 enum UserType{
   defaultt,

@@ -14,11 +14,11 @@ int outletId=0;
 String outletName="";
 
 String GetBaseUrl(){
-  return "https://scutisoft.in/zoomnshop";
+  //return "https://scutisoft.in/zoomnshop";
   return "http://94.130.140.81/ZoomNShop";
 }
 String GetImageBaseUrl(){
-  //return "http://94.130.140.81/ZoomNShop/AppAttachments/";
+  return "http://94.130.140.81/ZoomNShop/AppAttachments/";
   return "https://scutisoft.in/zoomnshop/AppAttachments/";
 }
 
